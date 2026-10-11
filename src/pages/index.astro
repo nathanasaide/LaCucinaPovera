@@ -1,0 +1,216 @@
+---
+import { getEntry, getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const site = await getEntry('settings', 'site');
+const s = site!.data;
+
+const menuEntries = await getCollection('menu');
+// Show only first 3 items from focaccia for homepage preview
+const focaccia = menuEntries.find(e => e.id === 'focaccia');
+const previewItems = focaccia ? focaccia.data.items.slice(0, 3) : [];
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout
+  title="La Cucina Povera"
+  description={s.tagline + ' ' + s.address}
+  isOpen={s.isOpen}
+  openText={s.openStatusText}
+  closedText={s.closedStatusText}
+>
+  <!-- ======================================================
+       HERO
+       ====================================================== -->
+  <section class="hero section--cream">
+    <div class="hero__inner container">
+      <!-- Handwritten script logo image -->
+      <img
+        src={`${base}/images/logo-script.png`}
+        alt="La Cucina Povera"
+        class="hero__logo"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+      />
+      <!-- Fallback text logo if image isn't uploaded yet -->
+      <h1 class="hero__fallback-title" style="display:none; font-family:'Cormorant Garamond',Georgia,serif; font-weight:300; font-size:clamp(3rem,10vw,6rem); line-height:1.1; margin-bottom:1.5rem;">
+        La Cucina<br /><em style="font-style:italic; color:#C0644A;">Povera</em>
+      </h1>
+
+      <p class="hero__tagline">{s.tagline}</p>
+
+      <div class="hero__address" style="font-family:'Cormorant SC',Georgia,serif; font-size:0.75rem; letter-spacing:0.16em; text-transform:uppercase; color:#8A7060; margin-bottom:2rem;">
+        {s.address}
+      </div>
+
+      <div class="hero__actions">
+        <a href={`${base}/menu`} class="btn btn--primary">See the menu</a>
+        <a href="#find-us" class="btn btn--outline">Find us</a>
+      </div>
+    </div>
+
+    <!-- Subtle scroll indicator -->
+    <div style="position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); opacity:0.3;">
+      <svg width="20" height="30" viewBox="0 0 20 30" fill="none">
+        <rect x="1" y="1" width="18" height="28" rx="9" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="10" cy="8" r="2.5" fill="currentColor">
+          <animate attributeName="cy" values="8;18;8" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       MENU PREVIEW
+       ====================================================== -->
+  <section class="section section--beige">
+    <div class="container">
+      <span class="section-label">The menu</span>
+      <div class="section-heading">
+        <h2>On the <em>board.</em></h2>
+      </div>
+
+      <p style="color:#5A4A38; max-width:36rem; margin-bottom:3rem; font-size:1.05rem;">
+        Fresh-baked focaccia, stuffed generously and made properly.
+        Everything made with care, nothing off a shelf.
+      </p>
+
+      <div class="menu-grid" style="max-width:44rem;">
+        {previewItems.map(item => (
+          <article class="menu-item">
+            <div>
+              <h3 class="menu-item__name">
+                {item.name}
+                {item.dietary && (
+                  <span class="menu-item__dietary">({item.dietary})</span>
+                )}
+              </h3>
+              <p class="menu-item__desc">{item.description}</p>
+            </div>
+            <div class="menu-item__price">{item.price}</div>
+          </article>
+        ))}
+      </div>
+
+      <div style="margin-top:2.5rem;">
+        <a href={`${base}/menu`} class="text-link">Full menu</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       STORY
+       ====================================================== -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="story-section">
+        <div class="story-section__text">
+          <span class="section-label">The story</span>
+          <div class="section-heading">
+            <h2>What <em>we are.</em></h2>
+          </div>
+          <div class="divider"></div>
+          {s.storyText.split('\n').map((para: string) => (
+            <p>{para}</p>
+          ))}
+          <p style="margin-top:1.5rem; font-family:'Cormorant Garamond',Georgia,serif; font-size:1.2rem; font-style:italic; color:#C0644A;">
+            {s.storyName} x
+          </p>
+        </div>
+
+        <div class="story-section__image">
+          <img
+            src={`${base}/images/focaccia-loaves.jpg`}
+            alt="Fresh-baked focaccia loaves"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       FIND US
+       ====================================================== -->
+  <section class="section section--dark" id="find-us">
+    <div class="container">
+      <span class="section-label" style="color:var(--saffron);">Come say hi</span>
+      <div class="section-heading">
+        <h2 style="color:var(--cream);">Find <em style="color:var(--saffron);">us.</em></h2>
+      </div>
+
+      <div class="find-us-grid">
+        <!-- Hours -->
+        <div>
+          <table class="hours-table">
+            {s.openingHours.map((row: { day: string; hours: string }) => (
+              <tr class={row.hours === 'Closed' ? 'closed' : ''}>
+                <td>{row.day}</td>
+                <td>{row.hours}</td>
+              </tr>
+            ))}
+          </table>
+
+          {s.hoursNote && (
+            <div style="margin-top:1.5rem; padding:1rem 1.25rem; border-left:2px solid var(--saffron); background:rgba(255,255,255,0.05);">
+              <p style="font-size:0.9rem; color:rgba(255,255,255,0.75); line-height:1.6;">
+                <strong style="color:var(--saffron); font-family:'Cormorant SC',Georgia,serif; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; display:block; margin-bottom:0.3rem;">This week</strong>
+                {s.hoursNote}
+              </p>
+            </div>
+          )}
+
+          <div style="margin-top:2rem; display:flex; gap:1rem; flex-wrap:wrap;">
+            <a
+              href={s.googleMapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn--ghost"
+            >
+              Get directions
+            </a>
+            <a href={`mailto:${s.email}`} class="btn btn--ghost">
+              Email us
+            </a>
+          </div>
+        </div>
+
+        <!-- Address + socials -->
+        <div>
+          <p style="font-family:'Cormorant Garamond',Georgia,serif; font-size:1.5rem; font-weight:300; color:var(--cream); line-height:1.6; margin-bottom:2rem;">
+            {s.address}
+          </p>
+          <p style="color:rgba(255,255,255,0.5); margin-bottom:0.5rem;">
+            <a href={`tel:${s.phone}`} style="color:rgba(255,255,255,0.7);">{s.phone}</a>
+          </p>
+          <p style="color:rgba(255,255,255,0.5); margin-bottom:2rem;">
+            <a href={`mailto:${s.email}`} style="color:rgba(255,255,255,0.7);">{s.email}</a>
+          </p>
+
+          <div style="display:flex; gap:1.5rem;">
+            <a
+              href={s.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style="font-family:'Cormorant SC',Georgia,serif; font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.6);"
+            >
+              Instagram ↗
+            </a>
+            {s.facebookUrl && (
+              <a
+                href={s.facebookUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style="font-family:'Cormorant SC',Georgia,serif; font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.6);"
+              >
+                Facebook ↗
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

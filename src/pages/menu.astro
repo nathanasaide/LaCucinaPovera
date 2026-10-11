@@ -1,0 +1,132 @@
+---
+import { getEntry, getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const site = await getEntry('settings', 'site');
+const s = site!.data;
+
+const menuEntries = await getCollection('menu');
+const focaccia = menuEntries.find(e => e.id === 'focaccia');
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout
+  title="Menu"
+  description="Our focaccia sandwich menu — fresh-baked, stuffed properly. La Cucina Povera, Offerton, Stockport."
+  isOpen={s.isOpen}
+  openText={s.openStatusText}
+  closedText={s.closedStatusText}
+>
+  <!-- Page hero -->
+  <section class="page-hero page-hero--beige">
+    <div class="container">
+      <span class="section-label">The menu</span>
+      <h1>What's <em style="font-style:italic; color:var(--terracotta);">on.</em></h1>
+      <p style="margin-top:1rem; font-size:1.1rem; color:#5A4A38; max-width:36rem;">
+        Fresh-baked focaccia, stuffed generously, made properly. Everything here is made
+        with real ingredients from real people.
+      </p>
+    </div>
+  </section>
+
+  <!-- Focaccia sandwiches -->
+  {focaccia && (
+    <section class="section section--cream">
+      <div class="container">
+        <div class="menu-page-grid">
+          <!-- Category header -->
+          <div class="menu-page-sticky">
+            <h2 style="font-size:clamp(2.5rem,6vw,4rem); line-height:1.05;">
+              <em style="font-style:italic; display:block; color:var(--terracotta); text-decoration:underline; text-decoration-color:var(--terracotta);">
+                {focaccia.data.category}
+              </em>
+            </h2>
+            {focaccia.data.description && (
+              <p style="margin-top:1rem; color:#5A4A38; font-size:1rem;">{focaccia.data.description}</p>
+            )}
+            <!-- Menu card image from uploaded content -->
+            <div style="margin-top:2rem; background:var(--warm-beige); padding:1.5rem; border-radius:2px;">
+              <img
+                src={`${base}/images/menu-card.jpg`}
+                alt="La Cucina Povera menu card"
+                loading="lazy"
+                style="width:100%; height:auto; border-radius:1px;"
+                onerror="this.parentElement.style.display='none'"
+              />
+            </div>
+          </div>
+
+          <!-- Menu items -->
+          <div class="menu-grid">
+            {focaccia.data.items.map(item => (
+              <article class="menu-item">
+                <div>
+                  <h3 class="menu-item__name">
+                    {item.name}
+                    {item.dietary && (
+                      <span class="menu-item__dietary">({item.dietary})</span>
+                    )}
+                  </h3>
+                  <p class="menu-item__desc">{item.description}</p>
+                </div>
+                <div class="menu-item__price">{item.price}</div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <!-- Dietary key -->
+        <div style="margin-top:4rem; padding-top:2rem; border-top:1px solid var(--beige-dark);">
+          <p style="font-size:0.8rem; color:#8A7060; font-family:'Cormorant SC',Georgia,serif; letter-spacing:0.1em;">
+            (v) vegetarian &nbsp;·&nbsp; (vg) vegan &nbsp;·&nbsp; (gf) gluten free — please ask about allergens
+          </p>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Come find us CTA -->
+  <section style="padding-block:var(--space-xl); background:var(--terracotta); text-align:center;">
+    <div class="container">
+      <span class="section-label" style="color:rgba(255,255,255,0.6);">Come in</span>
+      <h2 style="color:var(--cream); margin-bottom:1rem;">
+        Come and <em style="font-style:italic;">try it.</em>
+      </h2>
+      <p style="color:rgba(255,255,255,0.75); margin-bottom:2rem;">
+        We're on {s.address}. Focaccia's warm.
+      </p>
+      <a href={`${base}/#find-us`} class="btn btn--ghost">Find us</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Menu page two-col layout */
+  .menu-page-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+    max-width: var(--max-width);
+  }
+
+  .menu-page-sticky {
+    position: sticky;
+    top: calc(var(--nav-height) + 2rem);
+  }
+
+  /* Tablet: side panel unsticks, stacks below on small screens */
+  @media (max-width: 900px) {
+    .menu-page-grid {
+      grid-template-columns: 1fr;
+    }
+    .menu-page-sticky {
+      position: static;
+    }
+    /* Show menu card image smaller inline */
+    .menu-page-sticky > div:last-child {
+      max-width: 320px;
+    }
+  }
+</style>

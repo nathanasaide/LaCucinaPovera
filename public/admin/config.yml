@@ -1,0 +1,77 @@
+backend:
+  name: github
+  repo: nathanasaide/LaCucinaPovera
+  branch: main
+  base_url: https://sveltia-cms-auth.netlify.app
+
+# Media uploaded via CMS goes into public/images
+media_folder: public/images
+public_folder: /images
+
+site_url: https://nathanasaide.github.io/LaCucinaPovera
+
+collections:
+  - name: settings
+    label: Site Settings
+    files:
+      - name: site
+        label: General Settings
+        file: src/content/settings/site.json
+        fields:
+          - { label: Site Name, name: siteName, widget: string }
+          - { label: Tagline, name: tagline, widget: string }
+          - { label: Is Open Today?, name: isOpen, widget: boolean, default: true }
+          - { label: Open Status Text, name: openStatusText, widget: string, default: "Open today" }
+          - { label: Closed Status Text, name: closedStatusText, widget: string, default: "Closed today" }
+          - label: Opening Hours
+            name: openingHours
+            widget: list
+            fields:
+              - { label: Day, name: day, widget: string }
+              - { label: Hours, name: hours, widget: string }
+          - label: "Hours note / this week's exception"
+            name: hoursNote
+            widget: string
+            required: false
+            hint: "e.g. 'Closed this weekend — back Wed 22nd.' Leave blank to hide."
+          - { label: Address, name: address, widget: string }
+          - { label: Phone, name: phone, widget: string }
+          - { label: Email, name: email, widget: string }
+          - { label: Instagram URL, name: instagramUrl, widget: string }
+          - { label: Facebook URL, name: facebookUrl, widget: string }
+          - { label: Google Maps URL, name: googleMapsUrl, widget: string }
+          - { label: Our Story Text, name: storyText, widget: text }
+          - { label: Story Sign-off Name, name: storyName, widget: string }
+
+  - name: menu
+    label: Menu
+    files:
+      - name: focaccia
+        label: Focaccia Sandwiches
+        file: src/content/menu/focaccia.json
+        fields:
+          - { label: Category Name, name: category, widget: string }
+          - { label: Category Description, name: description, widget: string, required: false }
+          - label: Menu Items
+            name: items
+            widget: list
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Description, name: description, widget: text }
+              - { label: Price, name: price, widget: string }
+              - { label: "Dietary (v, vg, gf, etc)", name: dietary, widget: string, required: false }
+
+  - name: photos
+    label: Photo Gallery
+    files:
+      - name: gallery
+        label: Gallery
+        file: src/content/photos/gallery.json
+        fields:
+          - label: Photos
+            name: photos
+            widget: list
+            fields:
+              - { label: Image, name: src, widget: image }
+              - { label: Alt Text, name: alt, widget: string }
+              - { label: Caption, name: caption, widget: string, required: false }

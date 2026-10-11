@@ -1,0 +1,42 @@
+{
+  "category": "Focaccia Sandwiches",
+  "description": "Fresh-baked focaccia, stuffed properly.",
+  "items": [
+    {
+      "name": "Harvest Root",
+      "description": "Beetroot, blue cheese, walnuts & baby spinach.",
+      "price": "£5",
+      "dietary": "v"
+    },
+    {
+      "name": "Sicilian Green",
+      "description": "Mozzarella, pistachio pesto, rocket & hot honey.",
+      "price": "£5",
+      "dietary": ""
+    },
+    {
+      "name": "Spanish Fire",
+      "description": "Chicken, chorizo, roasted red peppers & onions.",
+      "price": "£7",
+      "dietary": ""
+    },
+    {
+      "name": "Tuscan Caesar",
+      "description": "Roast chicken, parmesan, gem lettuce & Caesar dressing.",
+      "price": "£6",
+      "dietary": ""
+    },
+    {
+      "name": "Ultimate Chicken Club",
+      "description": "Grilled chicken, smoked bacon, tomato, lettuce & herb mayo.",
+      "price": "£7",
+      "dietary": ""
+    },
+    {
+      "name": "Winter Squash & Sage",
+      "description": "Roasted butternut squash, crispy sage & pumpkin seed pesto.",
+      "price": "£5",
+      "dietary": "vg"
+    }
+  ]
+}

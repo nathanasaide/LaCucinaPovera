@@ -1,0 +1,74 @@
+---
+import { getEntry } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Gallery from '../components/Gallery.vue';
+
+const site = await getEntry('settings', 'site');
+const s = site!.data;
+
+const photosEntry = await getEntry('photos', 'gallery');
+const photos = photosEntry?.data.photos ?? [];
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Resolve paths relative to base
+const resolvedPhotos = photos.map(p => ({
+  ...p,
+  src: p.src.startsWith('http') ? p.src : `${base}${p.src}`,
+}));
+---
+
+<Layout
+  title="Photos"
+  description="Have a nosey — photos of our food, our space, and the good stuff. La Cucina Povera, Offerton, Stockport."
+  isOpen={s.isOpen}
+  openText={s.openStatusText}
+  closedText={s.closedStatusText}
+>
+  <!-- Page hero -->
+  <section class="page-hero page-hero--cream">
+    <div class="container">
+      <span class="section-label">The place</span>
+      <h1>Have a <em style="font-style:italic; color:var(--terracotta);">nosey.</em></h1>
+      <p style="margin-top:1rem; color:#5A4A38; max-width:30rem;">
+        A few snaps of the food and the good stuff. Pop in and see the real thing.
+      </p>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="section section--cream" style="padding-top:var(--space-md);">
+    <div class="container container--wide">
+      {resolvedPhotos.length > 0 ? (
+        <Gallery photos={resolvedPhotos} client:load />
+      ) : (
+        <div style="text-align:center; padding:4rem 0; color:#8A7060;">
+          <p style="font-family:'Cormorant Garamond',Georgia,serif; font-size:1.5rem; font-style:italic;">
+            Photos coming soon — follow us on Instagram in the meantime.
+          </p>
+          <a
+            href={s.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-link"
+            style="margin-top:1.5rem; display:inline-flex;"
+          >
+            @lacucinapovera on Instagram
+          </a>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="padding-block:var(--space-lg); background:var(--warm-beige); text-align:center;">
+    <div class="container">
+      <span class="section-label">Come in</span>
+      <h2>See it in <em style="font-style:italic; color:var(--terracotta);">person.</em></h2>
+      <p style="margin-top:1rem; color:#5A4A38; margin-bottom:2rem;">
+        It looks even better with a focaccia in hand.
+      </p>
+      <a href={`${base}/#find-us`} class="btn btn--primary">Find us</a>
+    </div>
+  </section>
+</Layout>
