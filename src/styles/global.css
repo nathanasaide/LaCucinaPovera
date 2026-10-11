@@ -660,9 +660,8 @@ p {
   .site-nav__links { gap: 0.75rem; }
   .site-nav__links .nav-hide-sm { display: none; }
 
-  /* Status badge: hide text label, show dot only */
-  .status-badge { padding: 0.35em 0.6em; gap: 0; }
-  .status-badge span + * { display: none; }
+  /* Status badge: keep text visible, just tighten padding */
+  .status-badge { padding: 0.35em 0.7em; }
 
   /* Two-col layouts → single column */
   .story-section,

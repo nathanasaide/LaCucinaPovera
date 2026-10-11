@@ -42,7 +42,8 @@ function isOpenWeekend(date: Date): boolean {
   const weeksDiff = Math.round(
     (thisFriday.getTime() - anchorFriday.getTime()) / (7 * 24 * 60 * 60 * 1000)
   );
-  return weeksDiff % 2 === 0; // even = open (anchor is week 0)
+  // Use ((n % 2) + 2) % 2 to handle negative weeksDiff correctly
+  return ((weeksDiff % 2) + 2) % 2 === 0; // even = open (anchor is week 0)
 }
 
 export function computeIsOpen(
