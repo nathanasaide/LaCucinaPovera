@@ -1,0 +1,231 @@
+---
+import { getEntry } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const site = await getEntry('settings', 'site');
+const s = site!.data;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const pizzas = [
+  {
+    name: 'Chorizo, Coriander & Hot Honey',
+    description: 'Spiced chorizo, fresh coriander, a drizzle of hot honey. Sweet heat, properly done.',
+  },
+  {
+    name: 'Margherita',
+    description: 'San Marzano tomato, fior di latte, fresh basil. The original — no notes.',
+  },
+  {
+    name: 'Pepperoni',
+    description: 'Classic cupped pepperoni, tomato, mozzarella. Crisp edges, good oil.',
+  },
+  {
+    name: 'Potato, Crispy Onions & Chilli',
+    description: 'Thin-sliced potato, golden crispy onions, fresh chilli. No tomato, all comfort.',
+  },
+  {
+    name: 'BBQ Chicken Leg & Red Onion',
+    description: 'Slow-cooked chicken leg, smoky BBQ base, sweet red onion. Proper crowd-pleaser.',
+  },
+  {
+    name: 'Prosciutto, Rocket & Mozzarella',
+    description: 'Cured prosciutto draped over melted mozzarella, finished with peppery rocket.',
+  },
+  {
+    name: 'Rosemary & Taleggio',
+    description: 'Fragrant rosemary, creamy Taleggio. Simple, rich, and deeply satisfying.',
+  },
+  {
+    name: 'Roast Red Pepper, Goats Cheese & Rocket',
+    description: 'Sweet roasted peppers, tangy goats cheese, fresh rocket. Bright and bold.',
+  },
+];
+---
+
+<Layout
+  title="Woodbank Park"
+  description="Wood-fired pizzas, soups of the day and fresh focaccia at Woodbank Park, Offerton. Dog walkers welcome — come rain or shine."
+  openText={s.openStatusText}
+  closedText={s.closedStatusText}
+  scheduleOverride={s.scheduleOverride}
+>
+  <!-- Hero -->
+  <section class="page-hero page-hero--dark">
+    <div class="container">
+      <span class="section-label" style="color:var(--saffron);">Woodbank Park</span>
+      <h1>Come as you <em style="font-style:italic; color:var(--saffron);">are.</em></h1>
+      <p style="margin-top:1.25rem; font-size:1.1rem; color:rgba(255,255,255,0.75); max-width:36rem; line-height:1.7;">
+        Out for a dog walk, a run, or just after something genuinely good to eat —
+        we're here. Wood-fired pizzas, soup of the day, and fresh focaccia.
+        Come rain or shine, within opening hours.
+      </p>
+      <div style="margin-top:2rem;">
+        <a href={`${base}/#find-us`} class="btn btn--ghost">Opening hours</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="section section--cream">
+    <div class="container">
+      <div style="max-width:40rem;">
+        <span class="section-label">The setup</span>
+        <div class="section-heading">
+          <h2>Pizza in the <em>park.</em></h2>
+        </div>
+        <div class="divider"></div>
+        <p style="color:#5A4A38; font-size:1.05rem; line-height:1.8;">
+          La Cucina Povera at Woodbank Park is our outdoor kitchen —
+          wood-fired pizzas made to order, proper soups on cold days,
+          and fresh focaccia straight from the oven.
+          Whether you've got a lead in one hand or just a good appetite,
+          you're welcome here.
+        </p>
+        <p style="color:#5A4A38; font-size:1.05rem; line-height:1.8; margin-top:1rem;">
+          Everything is made fresh. Nothing is reheated.
+          The same care that goes into the sandwiches goes into every pizza that comes out of that oven.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pizza menu -->
+  <section class="section section--beige">
+    <div class="container">
+      <span class="section-label">The pizzas</span>
+      <div class="section-heading">
+        <h2>From the <em>oven.</em></h2>
+      </div>
+      <p style="color:#5A4A38; max-width:36rem; margin-bottom:3rem; font-size:1.05rem;">
+        Wood-fired, made to order. Each one built on a proper base —
+        thin, charred at the edges, soft in the middle.
+      </p>
+
+      <div class="pizza-grid">
+        {pizzas.map(pizza => (
+          <article class="pizza-item">
+            <h3 class="pizza-item__name">{pizza.name}</h3>
+            <p class="pizza-item__desc">{pizza.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Soups & focaccia -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="woodbank-extras">
+
+        <!-- Soups -->
+        <div>
+          <span class="section-label">Soups</span>
+          <div class="section-heading">
+            <h2>Something <em>warm.</em></h2>
+          </div>
+          <div class="divider"></div>
+          <p style="color:#5A4A38; font-size:1.05rem; line-height:1.8;">
+            The soup changes with what's good — ask us what's on.
+            Our fennel sausage &amp; white bean soup is a regular — rich, slow-cooked,
+            exactly the kind of thing you want after an hour in the cold.
+          </p>
+          <p style="color:#5A4A38; font-size:1.05rem; line-height:1.8; margin-top:1rem;">
+            Always served with fresh focaccia on the side.
+          </p>
+        </div>
+
+        <!-- Focaccia -->
+        <div>
+          <span class="section-label">Focaccia</span>
+          <div class="section-heading">
+            <h2>Fresh from the <em>oven.</em></h2>
+          </div>
+          <div class="divider"></div>
+          <p style="color:#5A4A38; font-size:1.05rem; line-height:1.8;">
+            Baked fresh on site. Good olive oil, good salt, good bread.
+            Take a piece with your soup, your pizza, or just on its own.
+            It won't last long.
+          </p>
+          <p style="color:#5A4A38; font-size:1.05rem; line-height:1.8; margin-top:1rem;">
+            Available to take away too — whole pieces while they last.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Find us CTA -->
+  <section class="section section--dark" style="text-align:center;">
+    <div class="container">
+      <span class="section-label" style="color:var(--saffron);">Where to find us</span>
+      <div class="section-heading">
+        <h2 style="color:var(--cream);">Woodbank <em style="color:var(--saffron);">Park.</em></h2>
+      </div>
+      <p style="color:rgba(255,255,255,0.7); max-width:32rem; margin:1.25rem auto 2rem; font-size:1.05rem; line-height:1.7;">
+        Off Offerton Lane, Stockport. Plenty of space for dogs, kids, and anyone
+        who just fancied a walk and ended up staying for a pizza.
+      </p>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href={s.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="btn btn--ghost">
+          Get directions
+        </a>
+        <a href={`${base}/#find-us`} class="btn btn--ghost">
+          Opening hours
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero--dark {
+    background: var(--terracotta-dark);
+    padding-block: var(--space-xl);
+    padding-top: calc(var(--nav-height) + var(--space-xl));
+  }
+
+  .pizza-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1.5rem;
+    max-width: var(--max-width-wide);
+  }
+
+  .pizza-item {
+    background: var(--cream);
+    border: 1px solid var(--beige-dark);
+    border-radius: 2px;
+    padding: 1.5rem;
+  }
+
+  .pizza-item__name {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #2C2418;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .pizza-item__desc {
+    font-size: 0.9rem;
+    color: #6A5A48;
+    line-height: 1.6;
+  }
+
+  .woodbank-extras {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+  }
+
+  @media (max-width: 700px) {
+    .woodbank-extras {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+  }
+</style>
