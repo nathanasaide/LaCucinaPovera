@@ -16,9 +16,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <Layout
   title="La Cucina Povera"
   description={s.tagline + ' ' + s.address}
-  isOpen={s.isOpen}
   openText={s.openStatusText}
   closedText={s.closedStatusText}
+  scheduleOverride={s.scheduleOverride}
 >
   <!-- ======================================================
        HERO

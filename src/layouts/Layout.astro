@@ -2,21 +2,26 @@
 import '../styles/global.css';
 import { getEntry } from 'astro:content';
 
+import { computeIsOpen } from '../utils/openStatus';
+
 interface Props {
   title?: string;
   description?: string;
-  isOpen?: boolean;
   openText?: string;
   closedText?: string;
+  scheduleOverride?: string;
 }
 
 const {
   title = 'La Cucina Povera',
   description = 'Focaccia sandwiches & Italian street food. Offerton, Stockport.',
-  isOpen = true,
   openText = 'Open today',
   closedText = 'Closed today',
+  scheduleOverride = 'auto',
 } = Astro.props;
+
+// Server-side initial render (used for SSR / first paint before JS runs)
+const isOpen = computeIsOpen(new Date(), scheduleOverride);
 
 const fullTitle = title === 'La Cucina Povera' ? title : `${title} · La Cucina Povera`;
 
@@ -70,11 +75,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <a href={`${base}/#find-us`}>Find us</a>
           <a
             href={`${base}/#find-us`}
+            id="status-badge"
             class={`status-badge ${isOpen ? 'status-badge--open' : 'status-badge--closed'}`}
             aria-label={isOpen ? openText : closedText}
+            data-open-text={openText}
+            data-closed-text={closedText}
+            data-override={scheduleOverride}
           >
             <span class="status-badge__dot" aria-hidden="true"></span>
-            {isOpen ? openText : closedText}
+            <span id="status-badge-text">{isOpen ? openText : closedText}</span>
           </a>
         </div>
       </div>
@@ -156,5 +165,55 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         border: 0;
       }
     </style>
+
+    <script>
+      // Real-time open/closed status — runs in the browser on every page load.
+      // Mirrors the logic in src/utils/openStatus.ts (kept in sync manually).
+
+      const ANCHOR_FRIDAY = new Date('2025-10-10T00:00:00'); // Fri 10 Oct 2025 = open weekend anchor
+
+      function fridayOf(date) {
+        const d = new Date(date);
+        const day = d.getDay();
+        const daysToFriday = day === 0 ? -2 : day === 6 ? -1 : day - 5;
+        d.setDate(d.getDate() + daysToFriday);
+        d.setHours(0, 0, 0, 0);
+        return d;
+      }
+
+      function isOpenWeekend(date) {
+        const thisFriday = fridayOf(date);
+        const anchor = new Date(ANCHOR_FRIDAY);
+        anchor.setHours(0, 0, 0, 0);
+        const weeksDiff = Math.round((thisFriday - anchor) / (7 * 24 * 60 * 60 * 1000));
+        return weeksDiff % 2 === 0;
+      }
+
+      function computeIsOpen(now, override) {
+        if (override === 'open') return true;
+        if (override === 'closed') return false;
+        const day = now.getDay();
+        const mins = now.getHours() * 60 + now.getMinutes();
+        if (day === 3 || day === 4) return mins >= 1140 && mins < 1320; // Wed/Thu 19:00–22:00
+        if (day === 5 || day === 6 || day === 0) {
+          if (!isOpenWeekend(now)) return false;
+          return mins >= 1020 && mins < 1320; // Fri/Sat/Sun 17:00–22:00
+        }
+        return false;
+      }
+
+      const badge = document.getElementById('status-badge');
+      const badgeText = document.getElementById('status-badge-text');
+      if (badge && badgeText) {
+        const override = badge.dataset.override || 'auto';
+        const openText = badge.dataset.openText || 'Open today';
+        const closedText = badge.dataset.closedText || 'Closed today';
+        const open = computeIsOpen(new Date(), override);
+        badge.classList.toggle('status-badge--open', open);
+        badge.classList.toggle('status-badge--closed', !open);
+        badge.setAttribute('aria-label', open ? openText : closedText);
+        badgeText.textContent = open ? openText : closedText;
+      }
+    </script>
   </body>
 </html>

@@ -6,7 +6,8 @@ const settingsCollection = defineCollection({
   schema: z.object({
     siteName: z.string(),
     tagline: z.string(),
-    isOpen: z.boolean(),
+    isOpen: z.boolean().optional(),
+    scheduleOverride: z.enum(['auto', 'open', 'closed']).default('auto'),
     openStatusText: z.string(),
     closedStatusText: z.string(),
     openingHours: z.array(z.object({

@@ -20,7 +20,15 @@ collections:
         fields:
           - { label: Site Name, name: siteName, widget: string }
           - { label: Tagline, name: tagline, widget: string }
-          - { label: Is Open Today?, name: isOpen, widget: boolean, default: true }
+          - label: "Open / Closed override"
+            name: scheduleOverride
+            widget: select
+            default: "auto"
+            hint: "'Auto' uses the schedule (Wed–Thu 7–10pm, alternate Fri–Sun 5–10pm). Use 'Force open' or 'Force closed' to override."
+            options:
+              - { label: "Auto (use schedule)", value: "auto" }
+              - { label: "Force open", value: "open" }
+              - { label: "Force closed", value: "closed" }
           - { label: Open Status Text, name: openStatusText, widget: string, default: "Open today" }
           - { label: Closed Status Text, name: closedStatusText, widget: string, default: "Closed today" }
           - label: Opening Hours
