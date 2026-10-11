@@ -8,7 +8,7 @@ backend:
 media_folder: public/images
 public_folder: /images
 
-site_url: https://nathanasaide.github.io/LaCucinaPovera
+site_url: https://impoverishedkitchen.co.uk
 
 collections:
   - name: settings

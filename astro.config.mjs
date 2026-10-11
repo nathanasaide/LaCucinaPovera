@@ -5,8 +5,8 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://nathanasaide.github.io',
-  base: '/LaCucinaPovera',
+  site: 'https://impoverishedkitchen.co.uk',
+  base: '/',
   output: 'static',
   integrations: [
     vue(),
