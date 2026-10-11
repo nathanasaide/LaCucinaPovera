@@ -204,6 +204,73 @@ p {
   gap: var(--space-md);
 }
 
+/* Mobile controls — hidden on desktop */
+.site-nav__mobile {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.site-nav__burger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 2rem;
+  height: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  flex-shrink: 0;
+}
+
+.site-nav__burger span {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: #2C2418;
+  transition: transform 0.2s, opacity 0.2s;
+  transform-origin: center;
+}
+
+.site-nav__burger.is-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.site-nav__burger.is-open span:nth-child(2) { opacity: 0; }
+.site-nav__burger.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* Mobile drawer */
+.site-nav__drawer {
+  display: none;
+  flex-direction: column;
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  background: var(--cream);
+  border-bottom: 1px solid var(--beige-dark);
+  padding: 1rem 1.5rem 1.5rem;
+  gap: 0;
+  z-index: 99;
+}
+
+.site-nav__drawer[aria-hidden="false"] {
+  display: flex;
+}
+
+.site-nav__drawer a {
+  font-family: var(--font-sc);
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #2C2418;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--beige-dark);
+  transition: color 0.2s;
+}
+
+.site-nav__drawer a:last-child { border-bottom: none; }
+.site-nav__drawer a:hover { color: var(--terracotta); }
+
 .site-nav__links a {
   font-family: var(--font-sc);
   font-size: 0.7rem;
@@ -656,9 +723,9 @@ p {
     --space-lg:  2.5rem;
   }
 
-  /* Nav: tighten gaps, hide secondary links */
-  .site-nav__links { gap: 0.75rem; }
-  .site-nav__links .nav-hide-sm { display: none; }
+  /* Nav: switch to hamburger on mobile */
+  .site-nav__links { display: none; }
+  .site-nav__mobile { display: flex; }
 
   /* Status badge: keep text visible, just tighten padding */
   .status-badge { padding: 0.35em 0.7em; }

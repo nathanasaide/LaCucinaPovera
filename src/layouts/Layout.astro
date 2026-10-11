@@ -65,11 +65,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           La Cucina Povera
         </a>
 
+        <!-- Desktop links -->
         <div class="site-nav__links">
-          <a href={`${base}/`} class="nav-hide-sm">Home</a>
+          <a href={`${base}/`}>Home</a>
           <a href={`${base}/menu`}>Menu</a>
           <a href={`${base}/woodbank`}>Woodbank</a>
-          <a href={`${base}/photos`} class="nav-hide-sm">Photos</a>
+          <a href={`${base}/photos`}>Photos</a>
           <a href={`${base}/#find-us`}>Find us</a>
           <a
             href={`${base}/#find-us`}
@@ -85,6 +86,35 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <span id="status-badge-text">{closedText}</span>
           </a>
         </div>
+
+        <!-- Mobile: status badge + hamburger -->
+        <div class="site-nav__mobile">
+          <a
+            href={`${base}/#find-us`}
+            id="status-badge-mobile"
+            class="status-badge status-badge--closed"
+            aria-label={closedText}
+            data-open-text={openText}
+            data-closed-text={closedText}
+            data-override={scheduleOverride}
+            style="visibility:hidden"
+          >
+            <span class="status-badge__dot" aria-hidden="true"></span>
+            <span id="status-badge-text-mobile">{closedText}</span>
+          </a>
+          <button class="site-nav__burger" id="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile drawer -->
+      <div class="site-nav__drawer" id="mobile-menu" aria-hidden="true">
+        <a href={`${base}/`} onclick="closeMobileMenu()">Home</a>
+        <a href={`${base}/menu`} onclick="closeMobileMenu()">Menu</a>
+        <a href={`${base}/woodbank`} onclick="closeMobileMenu()">Woodbank</a>
+        <a href={`${base}/photos`} onclick="closeMobileMenu()">Photos</a>
+        <a href={`${base}/#find-us`} onclick="closeMobileMenu()">Find us</a>
       </div>
     </nav>
 
@@ -166,6 +196,38 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </style>
 
     <script>
+      // Hamburger menu
+      const burger = document.getElementById('nav-burger');
+      const drawer = document.getElementById('mobile-menu');
+      function closeMobileMenu() {
+        drawer.setAttribute('aria-hidden', 'true');
+        burger.setAttribute('aria-expanded', 'false');
+        burger.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+      window.closeMobileMenu = closeMobileMenu;
+      burger?.addEventListener('click', () => {
+        const open = drawer.getAttribute('aria-hidden') === 'false';
+        if (open) {
+          closeMobileMenu();
+        } else {
+          drawer.setAttribute('aria-hidden', 'false');
+          burger.setAttribute('aria-expanded', 'true');
+          burger.classList.add('is-open');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+      // Close drawer on outside click
+      document.addEventListener('click', (e) => {
+        if (drawer?.getAttribute('aria-hidden') === 'false' &&
+            !drawer.contains(e.target) &&
+            !burger.contains(e.target)) {
+          closeMobileMenu();
+        }
+      });
+    </script>
+
+    <script>
       // Real-time open/closed status — runs in the browser on every page load.
       // Mirrors the logic in src/utils/openStatus.ts (kept in sync manually).
 
@@ -202,19 +264,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         return false;
       }
 
-      const badge = document.getElementById('status-badge');
-      const badgeText = document.getElementById('status-badge-text');
-      if (badge && badgeText) {
-        const override = badge.dataset.override || 'auto';
-        const openText = badge.dataset.openText || 'Open today';
-        const closedText = badge.dataset.closedText || 'Closed today';
+      function applyBadge(badgeEl, textEl) {
+        if (!badgeEl || !textEl) return;
+        const override = badgeEl.dataset.override || 'auto';
+        const openText = badgeEl.dataset.openText || 'Open today';
+        const closedText = badgeEl.dataset.closedText || 'Closed today';
         const open = computeIsOpen(new Date(), override);
-        badge.classList.toggle('status-badge--open', open);
-        badge.classList.toggle('status-badge--closed', !open);
-        badge.setAttribute('aria-label', open ? openText : closedText);
-        badgeText.textContent = open ? openText : closedText;
-        badge.style.visibility = 'visible';
+        badgeEl.classList.toggle('status-badge--open', open);
+        badgeEl.classList.toggle('status-badge--closed', !open);
+        badgeEl.setAttribute('aria-label', open ? openText : closedText);
+        textEl.textContent = open ? openText : closedText;
+        badgeEl.style.visibility = 'visible';
       }
+      applyBadge(document.getElementById('status-badge'), document.getElementById('status-badge-text'));
+      applyBadge(document.getElementById('status-badge-mobile'), document.getElementById('status-badge-text-mobile'));
     </script>
   </body>
 </html>
