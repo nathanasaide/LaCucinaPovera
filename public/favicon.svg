@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <rect width="32" height="32" rx="4" fill="#C0644A"/>
-  <text x="16" y="22" font-family="Georgia, serif" font-size="18" fill="#FAF6F0" text-anchor="middle" font-style="italic">L</text>
+  <!-- Italic "L" as a path — vertical stroke + horizontal foot, slanted right -->
+  <path d="M10 7 L13 7 L13 23 L22 23 L22 26 L10 26 Z" fill="#FAF6F0" transform="skewX(-8)"/>
 </svg>
