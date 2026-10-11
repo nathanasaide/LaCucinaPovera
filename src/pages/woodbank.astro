@@ -110,6 +110,41 @@ const pizzas = [
           </article>
         ))}
       </div>
+
+      <!-- How you want it -->
+      <div class="pizza-serve">
+        <div class="pizza-serve__text">
+          <span class="section-label">How you want it</span>
+          <div class="section-heading" style="margin-top:0.5rem;">
+            <h2>Folded or <em>boxed.</em></h2>
+          </div>
+          <div class="divider"></div>
+          <p style="color:#5A4A38; font-size:1.05rem; line-height:1.8;">
+            Eat it on the spot — folded in half, Neapolitan-style, straight from the oven.
+            Or take it away in a box and get back to the walk.
+            Either way, it travels well and it won't last long.
+          </p>
+          <p style="color:#5A4A38; font-size:1.05rem; line-height:1.8; margin-top:1rem;">
+            Your call. We'll have it ready.
+          </p>
+        </div>
+        <div class="pizza-serve__visual" aria-hidden="true">
+          <!-- Placeholder until a real photo is dropped into public/images/pizza-serve.jpg -->
+          <div class="pizza-serve__placeholder" id="pizza-serve-img">
+            <img
+              src={`${base}/images/pizza-serve.jpg`}
+              alt="Pizza folded to go"
+              loading="lazy"
+              onerror="this.parentElement.classList.add('pizza-serve__placeholder--fallback'); this.style.display='none';"
+            />
+            <div class="pizza-serve__placeholder-text">
+              <span>🍕</span>
+              <p>Folded &amp; ready to go</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -174,6 +209,9 @@ const pizzas = [
         <a href={`${base}/#find-us`} class="btn btn--ghost">
           Opening hours
         </a>
+        <a href="https://www.instagram.com/la_cucinapovera" target="_blank" rel="noopener noreferrer" class="btn btn--ghost">
+          @la_cucinapovera
+        </a>
       </div>
     </div>
   </section>
@@ -226,6 +264,68 @@ const pizzas = [
     .woodbank-extras {
       grid-template-columns: 1fr;
       gap: var(--space-lg);
+    }
+  }
+
+  /* Pizza serve section */
+  .pizza-serve {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+    margin-top: var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--beige-dark);
+  }
+
+  .pizza-serve__placeholder {
+    position: relative;
+    background: var(--warm-beige);
+    border-radius: 2px;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+  }
+
+  .pizza-serve__placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Shown when image hasn't been uploaded yet */
+  .pizza-serve__placeholder-text {
+    display: none;
+  }
+
+  .pizza-serve__placeholder--fallback .pizza-serve__placeholder-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    position: absolute;
+    inset: 0;
+    color: #8A7060;
+  }
+
+  .pizza-serve__placeholder--fallback .pizza-serve__placeholder-text span {
+    font-size: 3rem;
+  }
+
+  .pizza-serve__placeholder--fallback .pizza-serve__placeholder-text p {
+    font-family: var(--font-sc);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 700px) {
+    .pizza-serve {
+      grid-template-columns: 1fr;
+    }
+    .pizza-serve__visual {
+      order: -1;
     }
   }
 </style>
