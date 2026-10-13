@@ -1,52 +1,23 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { shallowRef } from 'vue'
+import LightboxDialog from './LightboxDialog.vue'
 
 defineProps<{ src: string; alt: string }>()
 
-const open = ref(false)
-
-function openLightbox() {
-  open.value = true
-  document.body.style.overflow = 'hidden'
-}
-
-function closeLightbox() {
-  open.value = false
-  document.body.style.overflow = ''
-}
-
-function handleKey(e: KeyboardEvent) {
-  if (e.key === 'Escape') closeLightbox()
-}
-
-onMounted(() => window.addEventListener('keydown', handleKey))
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKey)
-  document.body.style.overflow = ''
-})
+const open = shallowRef(false)
 </script>
 
 <template>
   <!-- Thumbnail — clickable -->
-  <button class="img-lightbox-trigger" :aria-label="`View ${alt} full screen`" @click="openLightbox">
+  <button type="button" class="img-lightbox-trigger" :aria-label="`View ${alt} full screen`" @click="open = true">
     <img :src="src" :alt="alt" loading="lazy" />
     <span class="img-lightbox-hint" aria-hidden="true">tap to enlarge</span>
   </button>
 
   <!-- Lightbox -->
-  <Teleport to="body">
-    <div
-      v-if="open"
-      class="lightbox"
-      role="dialog"
-      aria-modal="true"
-      :aria-label="alt"
-      @click.self="closeLightbox"
-    >
-      <button class="lightbox__close" @click="closeLightbox" aria-label="Close">&times;</button>
-      <img class="lightbox__img" :src="src" :alt="alt" />
-    </div>
-  </Teleport>
+  <LightboxDialog :open="open" :label="alt" @close="open = false">
+    <img v-if="open" class="lightbox__img" :src="src" :alt="alt" />
+  </LightboxDialog>
 </template>
 
 <style scoped>

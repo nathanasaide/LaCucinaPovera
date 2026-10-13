@@ -1,0 +1,172 @@
+---
+import { getEntry } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const site = await getEntry('settings', 'site');
+const s = site!.data;
+
+const woodbank = await getEntry('woodbank', 'site');
+const w = woodbank!.data;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout
+  title="Pizzas"
+  description="Wood-fired pizzas in Offerton, on the way to Woodbank Park. Made to order. La Cucina Povera."
+  openText={s.openStatusText}
+  closedText={s.closedStatusText}
+  scheduleOverride={s.scheduleOverride}
+>
+  <!-- Page header — dark, outdoor feel -->
+  <div class="page-hero" style="background:var(--nero); color:var(--carta); border-bottom:2px solid var(--rosso);">
+    <div class="wrap">
+      <span class="label" style="color:rgba(255,255,255,0.5);">22 Park Lane, Offerton</span>
+      <h1>Come as you<br /><span style="color:var(--rosso);">are.</span></h1>
+      <p class="lede" style="color:rgba(255,255,255,0.75); margin-top:0.875rem; max-width:36rem;">
+        Wood-fired pizzas made to order from an outdoor kitchen on Park Lane — on the way to Woodbank.
+        Bring the dog. Come as you are.
+      </p>
+      <div class="btn-row" style="margin-top:1.25rem;">
+        {w.googleMapsUrl && (
+          <a href={w.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="btn btn--ghost">
+            Get directions
+          </a>
+        )}
+        <a href={`${base}/#find-us`} class="btn btn--ghost">Opening hours</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Intro -->
+  <section class="wrap block">
+    <div class="block__head">
+      <span class="label">The setup</span>
+      <h2>Pizza in<br /><span style="color:var(--rosso);">the park.</span></h2>
+    </div>
+    <p class="lede">
+      Wood-fired pizzas made to order from the outdoor kitchen at 22 Park Lane — round the back,
+      on the way to Woodbank. Whether you've got a lead in one hand or just a good appetite,
+      you're welcome here.
+    </p>
+    <p class="lede">Everything is made fresh.</p>
+  </section>
+
+  <!-- Pizza menu -->
+  <section style="background:var(--kraft); padding-block:2.25rem 3.25rem;">
+    <div class="wrap block" style="padding-block:0; gap:1.5rem;">
+      <div class="block__head">
+        <span class="label">10–11 inch · wood-fired · made to order</span>
+        <h2>From the<br /><span style="color:var(--rosso);">oven.</span></h2>
+      </div>
+      <p class="lede">
+        Thin base, charred at the edges, soft in the middle. Every one made when you order it —
+        nothing sits under a lamp.
+      </p>
+
+      <div class="menu-sheet" style="max-width:640px;">
+        {w.pizzas.map((pizza, i) => {
+          const twine = i % 2 === 0
+            ? "M34 14 C28 10, 22 6, 14 9 C8 11, 6 16, 4 14"
+            : "M34 14 C28 18, 22 22, 14 19 C8 17, 6 12, 4 14";
+          const tagAngle = i % 2 === 0 ? "rotate(-2deg)" : "rotate(2deg)";
+          return (
+            <article class="menu-item">
+              <div>
+                <h3 class="menu-item__name">{pizza.name}</h3>
+                <p class="menu-item__desc">{pizza.description}</p>
+              </div>
+              {pizza.price && (
+                <div class="menu-item__price">
+                  <svg width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true">
+                    <path d={twine} stroke="#8A6A42" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                    <circle cx="4" cy="14" r="3" stroke="#8A6A42" stroke-width="1.5" fill="#E9DDC6"/>
+                  </svg>
+                  <span class="price-tag" style={`transform:${tagAngle};`}>{pizza.price}</span>
+                </div>
+              )}
+            </article>
+          );
+        })}
+      </div>
+
+      <p style="font-family:var(--font-typed); font-size:0.8rem; color:var(--nero-3); border-top:1px dashed var(--piega); padding-top:1rem; max-width:640px;">
+        Boxed to take away or eat as you go. Please ask about allergens before ordering.
+      </p>
+    </div>
+  </section>
+
+  <!-- Dippers -->
+  {w.dippers && w.dippers.length > 0 && (
+    <section style="background:var(--nero); color:var(--carta); padding-block:2.25rem 3.25rem;">
+      <div class="wrap block" style="padding-block:0; gap:1.25rem;">
+      <div class="block__head">
+        <span class="label" style="color:rgba(255,255,255,0.5);">Add on</span>
+        <h2>Crust<br /><span style="color:var(--rosso);">dippers.</span></h2>
+        <p class="lede" style="color:rgba(255,255,255,0.75);">For the crust. Worth it.</p>
+      </div>
+      <div class="menu-sheet" style="max-width:480px; color:var(--nero);">
+        {w.dippers.map((dip, i) => {
+          const twine = i % 2 === 0
+            ? "M34 14 C28 10, 22 6, 14 9 C8 11, 6 16, 4 14"
+            : "M34 14 C28 18, 22 22, 14 19 C8 17, 6 12, 4 14";
+          const tagAngle = i % 2 === 0 ? "rotate(-2deg)" : "rotate(2deg)";
+          return (
+            <article class="menu-item">
+              <div>
+                <h3 class="menu-item__name">{dip.name}</h3>
+              </div>
+              <div class="menu-item__price">
+                <svg width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true">
+                  <path d={twine} stroke="#8A6A42" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                  <circle cx="4" cy="14" r="3" stroke="#8A6A42" stroke-width="1.5" fill="#E9DDC6"/>
+                </svg>
+                <span class="price-tag" style={`transform:${tagAngle};`}>{dip.price}</span>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Also on -->
+  <section class="wrap block" style="gap:1rem;">
+    <div class="block__head">
+      <span class="label">Also on</span>
+      <h2>Focaccia &amp;<br /><span style="color:var(--rosso);">soups.</span></h2>
+    </div>
+    {w.focacciaText.split('\n').filter(Boolean).map((para: string) => (
+      <p class="lede">{para}</p>
+    ))}
+    {w.soupText.split('\n').filter(Boolean).map((para: string) => (
+      <p class="lede">{para}</p>
+    ))}
+    <div class="btn-row" style="margin-top:0.5rem;">
+      <a href={`${base}/sandwiches`} class="btn btn--line">See the sandwich menu</a>
+    </div>
+  </section>
+
+  <!-- Find us at the park -->
+  <section class="find-us">
+    <div class="wrap block" style="gap:1.25rem;">
+      <span class="label" style="color:rgba(255,255,255,0.5);">Where to find us</span>
+      <h2>Round<br /><span style="color:var(--rosso);">the back.</span></h2>
+      <p style="font-family:var(--font-typed); font-size:0.94rem; color:rgba(255,255,255,0.7); max-width:40ch; line-height:1.7;">
+        {w.locationText}
+      </p>
+      <div class="btn-row">
+        {w.googleMapsUrl && (
+          <a href={w.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="btn btn--ghost">
+            Get directions
+          </a>
+        )}
+        <a href={`${base}/#find-us`} class="btn btn--ghost">Opening hours</a>
+        <a href={s.instagramUrl} target="_blank" rel="noopener noreferrer" class="btn btn--ghost">
+          Instagram
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

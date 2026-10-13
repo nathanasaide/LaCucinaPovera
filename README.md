@@ -14,7 +14,7 @@ npm install
 npm run dev
 ```
 
-The site will be at **http://localhost:4321/LaCucinaPovera**
+The site will be at **http://localhost:4321/**
 
 > **Note:** The CMS admin panel (`/admin`) won't work locally — it needs to talk to GitHub. Edit content locally by changing the JSON files in `src/content/` directly (see below).
 
@@ -28,11 +28,12 @@ All content lives in `src/content/`. You never need to touch any other files.
 
 | Field | What it does |
 |---|---|
-| `isOpen` | `true` or `false` — controls the Open/Closed badge in the nav |
-| `openStatusText` | Text shown when open, e.g. `"Open today"` |
-| `closedStatusText` | Text shown when closed, e.g. `"Closed today"` |
+| `scheduleOverride` | `auto` follows the London-time schedule; `open` or `closed` forces the badge until changed back to `auto` |
+| `openStatusText` | Text shown when open, e.g. `"Open now"` |
+| `closedStatusText` | Text shown when closed, e.g. `"Closed now"` |
 | `openingHours` | Array of day/hours rows shown in the Find Us section and footer |
-| `hoursNote` | **This week's note** — shown as a callout under the hours table. Use this for weekend exceptions, e.g. `"Closed this weekend — back Wed 22nd."` Leave blank to hide it. |
+| `hoursNote` | **This week's note** — shown under the hours table. Leave blank to hide it. This text does not change the automatic status badge. |
+| `hoursNoteExpires` | Last visible date (`YYYY-MM-DD`), inclusive in London time. Leave blank for a permanent note. |
 | `instagramUrl` | Your Instagram profile URL |
 | `facebookUrl` | Your Facebook page URL — leave blank to hide |
 | `address` | Your full address |
@@ -48,6 +49,12 @@ Add, remove or edit focaccia sandwich items. Each item has:
 - `price` — e.g. `"£5"`
 - `dietary` — e.g. `"v"`, `"vg"`, `"gf"` — leave blank for none
 
+### Woodbank Park — `src/content/woodbank/site.json`
+
+Edit the pizza list, soup and focaccia descriptions, and location description through **Woodbank Park → Park menu and location** in the CMS. Use line breaks to separate paragraphs in the soup and focaccia descriptions.
+
+`googleMapsUrl` is independent of the shop's directions. Set it to the verified stall or entrance pin; the park directions button stays hidden while it is blank.
+
 ### Photos — `src/content/photos/gallery.json`
 
 Add photos to the gallery. Each entry needs:
@@ -62,7 +69,7 @@ Add photos to the gallery. Each entry needs:
 Once the site is deployed to GitHub Pages, you can manage all content at:
 
 ```
-https://nathanasaide.github.io/LaCucinaPovera/admin
+https://impoverishedkitchen.co.uk/admin
 ```
 
 ### First-time login
@@ -75,7 +82,7 @@ https://nathanasaide.github.io/LaCucinaPovera/admin
 ### What you can do in the CMS
 
 **Site Settings** — the first collection in the sidebar. This is where you:
-- Flip the **open/closed toggle** (`Is Open Today?`)
+- Set the **Open / Closed override** to Auto, Force open, or Force closed
 - Update **opening hours**
 - Edit the **"This week" hours note** for weekend exceptions
 - Update **Instagram / Facebook links**
@@ -96,11 +103,12 @@ Every save triggers a GitHub commit. GitHub Actions then rebuilds the site autom
 Your schedule alternates — some weekends you're open (Fri–Sun 5–10pm), others you're not. The quickest way to manage this:
 
 1. Open the CMS → **Site Settings**
-2. Flip **Is Open Today?** on/off as needed
+2. Leave **Open / Closed override** on **Auto** for the usual rotation (Wed–Thu 7–10pm; alternate Fri–Sun 5–10pm, anchored to the open weekend of 10–12 October 2025). Use **Force open** or **Force closed** for an exception, and return it to **Auto** afterwards.
 3. Update the **"Hours note"** field — e.g.:
    - `"Open this weekend (Fri–Sun 5–10pm) — see you there."`
    - `"Closed this weekend — back Wednesday 7pm."`
-4. Hit **Save** → live in ~2 minutes
+4. Set **Hours note last visible date** to hide a dated note automatically after its final day. This expires the note, not the status override.
+5. Hit **Save** and wait for the deployment workflow to finish.
 
 ---
 

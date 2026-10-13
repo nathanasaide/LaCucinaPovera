@@ -5,7 +5,7 @@
  *   - Wednesday & Thursday: 19:00 – 22:00 every week
  *   - Friday, Saturday, Sunday: 17:00 – 22:00 on alternate (open) weekends
  *
- * Anchor: the weekend of 11–13 Oct 2025 is an OPEN weekend.
+ * Anchor: the weekend of 10–12 Oct 2025 is an OPEN weekend.
  * Every subsequent weekend alternates: closed → open → closed → …
  *
  * Override:
@@ -16,7 +16,25 @@
 
 // Friday of the anchor open weekend (11 Oct 2025 is a Saturday, so anchor Friday = 10 Oct 2025)
 // We use the ISO week containing 11 Oct 2025 — specifically we tag by the Friday of that week.
-const ANCHOR_FRIDAY = new Date('2025-10-10T00:00:00'); // Fri 10 Oct 2025
+const ANCHOR_FRIDAY = new Date('2025-10-10T00:00:00Z'); // Fri 10 Oct 2025
+const londonFormatter = new Intl.DateTimeFormat('en-GB', {
+  timeZone: 'Europe/London',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  hourCycle: 'h23',
+});
+
+function londonCalendarDate(now: Date): Date {
+  const parts = Object.fromEntries(londonFormatter.formatToParts(now).map(({ type, value }) => [type, value]));
+  return new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day), Number(parts.hour), Number(parts.minute)));
+}
+
+export function isHoursNoteCurrent(now: Date, expiresOn?: string): boolean {
+  return !expiresOn || londonCalendarDate(now).toISOString().slice(0, 10) <= expiresOn;
+}
 
 /**
  * Returns the Friday of the week containing `date` (Mon–Sun week, but
@@ -24,11 +42,11 @@ const ANCHOR_FRIDAY = new Date('2025-10-10T00:00:00'); // Fri 10 Oct 2025
  */
 function fridayOf(date: Date): Date {
   const d = new Date(date);
-  const day = d.getDay(); // 0=Sun,1=Mon,...,5=Fri,6=Sat
+  const day = d.getUTCDay(); // 0=Sun,1=Mon,...,5=Fri,6=Sat
   // Distance back to Friday: Sun→-2 days (or +5), Sat→-1, Fri→0, Mon→4, …
-  const daysToFriday = day === 0 ? -2 : day === 6 ? -1 : day - 5;
-  d.setDate(d.getDate() + daysToFriday);
-  d.setHours(0, 0, 0, 0);
+  const daysToFriday = day === 0 ? -2 : 5 - day;
+  d.setUTCDate(d.getUTCDate() + daysToFriday);
+  d.setUTCHours(0, 0, 0, 0);
   return d;
 }
 
@@ -37,10 +55,8 @@ function fridayOf(date: Date): Date {
  */
 function isOpenWeekend(date: Date): boolean {
   const thisFriday = fridayOf(date);
-  const anchorFriday = new Date(ANCHOR_FRIDAY);
-  anchorFriday.setHours(0, 0, 0, 0);
   const weeksDiff = Math.round(
-    (thisFriday.getTime() - anchorFriday.getTime()) / (7 * 24 * 60 * 60 * 1000)
+    (thisFriday.getTime() - ANCHOR_FRIDAY.getTime()) / (7 * 24 * 60 * 60 * 1000)
   );
   // Use ((n % 2) + 2) % 2 to handle negative weeksDiff correctly
   return ((weeksDiff % 2) + 2) % 2 === 0; // even = open (anchor is week 0)
@@ -53,9 +69,10 @@ export function computeIsOpen(
   if (override === 'open') return true;
   if (override === 'closed') return false;
 
-  const day = now.getDay();   // 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat
-  const h = now.getHours();
-  const m = now.getMinutes();
+  const local = londonCalendarDate(now);
+  const day = local.getUTCDay();   // 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat
+  const h = local.getUTCHours();
+  const m = local.getUTCMinutes();
   const timeMinutes = h * 60 + m;
 
   const open19  = 19 * 60;  // 7 pm
@@ -69,7 +86,7 @@ export function computeIsOpen(
 
   // Friday, Saturday, Sunday: 17:00 – 22:00 on open weekends
   if (day === 5 || day === 6 || day === 0) {
-    if (!isOpenWeekend(now)) return false;
+    if (!isOpenWeekend(local)) return false;
     return timeMinutes >= open17 && timeMinutes < close22;
   }
 

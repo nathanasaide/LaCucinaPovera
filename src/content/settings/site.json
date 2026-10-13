@@ -1,16 +1,16 @@
 {
   "siteName": "La Cucina Povera",
-  "tagline": "Focaccia sandwiches & Italian street food.",
-  "isOpen": true,
-  "openStatusText": "Open today",
-  "closedStatusText": "Closed today",
+  "tagline": "Wood-fired pizza & Italian street food in Offerton, Stockport.",
+  "openStatusText": "Open now",
+  "closedStatusText": "Closed now",
   "openingHours": [
     { "day": "Wednesday", "hours": "7pm – 10pm" },
     { "day": "Thursday", "hours": "7pm – 10pm" },
     { "day": "Fri – Sun (alternate weekends)", "hours": "5pm – 10pm" },
     { "day": "Mon, Tue & off-weekends", "hours": "Closed" }
   ],
-  "hoursNote": "This weekend (11–13 Oct) we're open Fri–Sun 4–9pm. Next weekend (18–20 Oct) closed — back Wed 22nd.",
+  "hoursNote": "",
+  "hoursNoteExpires": "",
   "address": "22 Park Lane, Offerton, Stockport, SK1 4JS",
   "phone": "07761655161",
   "email": "impoverishedkitchen@gmail.com",
@@ -18,6 +18,6 @@
   "instagramUrl": "https://www.instagram.com/la_cucinapovera",
   "facebookUrl": "",
   "googleMapsUrl": "https://www.google.com/maps/dir/?api=1&destination=22+Park+Lane%2C+Offerton%2C+Stockport%2C+SK1+4JS",
-  "storyText": "La Cucina Povera — 'the poor kitchen' — is a love letter to Italian cucina povera cooking. Honest, unfussy food made with the best ingredients. Focaccia baked fresh, stuffed generously, and served with care. No shortcuts, no fuss — just the good stuff.",
+  "storyText": "La Cucina Povera — 'the poor kitchen'. It's a thing people in the south of Italy have always done: take what you've got, a bit of dough, whatever's good, a proper fire, and make something worth eating. No ceremony. No waste.\n\nThis is that. A proper pop-up at Woodbank Park and focaccia out of a converted outhouse on Park Lane. Something we always wanted to do. Now we're doing it.\n\nEvery pizza is made when you order it. Nothing sits. Nothing's reheated. You find us, we feed you.",
   "storyName": "La Cucina Povera"
 }

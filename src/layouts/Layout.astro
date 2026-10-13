@@ -13,20 +13,16 @@ interface Props {
 const {
   title = 'La Cucina Povera',
   description = 'Focaccia sandwiches & Italian street food. Offerton, Stockport.',
-  openText = 'Open today',
-  closedText = 'Closed today',
+  openText = 'Open now',
+  closedText = 'Closed now',
   scheduleOverride = 'auto',
 } = Astro.props;
 
-
-
 const fullTitle = title === 'La Cucina Povera' ? title : `${title} · La Cucina Povera`;
 
-// Load site settings for footer
 const siteEntry = await getEntry('settings', 'site');
 const site = siteEntry!.data;
 
-// Resolve the base path for links
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
@@ -37,57 +33,52 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
-
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="La Cucina Povera" />
-
-    <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <link rel="icon" href={`${base}/favicon.ico`} />
-
     <title>{fullTitle}</title>
-
-    <!-- Preconnect to Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
   <body>
-    <!-- Skip to main content -->
-    <a href="#main" class="sr-only">Skip to content</a>
+    <a href="#main" class="sr-only skip-link">Skip to content</a>
 
-    <!-- Navigation -->
+    <!-- ── Top nav ──────────────────────────────────────── -->
     <nav class="site-nav" aria-label="Main navigation">
       <div class="site-nav__inner">
+        <!-- Brand -->
         <a href={`${base}/`} class="site-nav__logo" aria-label="La Cucina Povera — home">
-          La Cucina Povera
+          La Cucina<br />Povera
         </a>
 
         <!-- Desktop links -->
         <div class="site-nav__links">
           <a href={`${base}/`}>Home</a>
-          <a href={`${base}/menu`}>Menu</a>
-          <a href={`${base}/woodbank`}>Woodbank</a>
+          <a href={`${base}/pizzas`}>Pizzas</a>
+          <a href={`${base}/sandwiches`}>Sandwiches</a>
           <a href={`${base}/photos`}>Photos</a>
           <a href={`${base}/#find-us`}>Find us</a>
-          <a
-            href={`${base}/#find-us`}
-            id="status-badge"
-            class="status-badge status-badge--closed"
-            aria-label={closedText}
-            data-open-text={openText}
-            data-closed-text={closedText}
-            data-override={scheduleOverride}
-            style="visibility:hidden"
-          >
-            <span class="status-badge__dot" aria-hidden="true"></span>
-            <span id="status-badge-text">{closedText}</span>
-          </a>
         </div>
 
-        <!-- Mobile: status badge + hamburger -->
+        <!-- Desktop door sign -->
+        <a
+          href={`${base}/#find-us`}
+          id="status-badge"
+          class="status-badge status-badge--closed"
+          aria-label={closedText}
+          data-open-text={openText}
+          data-closed-text={closedText}
+          data-override={scheduleOverride}
+          style="visibility:hidden; display:none;"
+        >
+          <small>Today</small>
+          <span class="rstamp" id="status-badge-text">{closedText}</span>
+        </a>
+
+        <!-- Mobile: door sign + burger -->
         <div class="site-nav__mobile">
           <a
             href={`${base}/#find-us`}
@@ -99,10 +90,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             data-override={scheduleOverride}
             style="visibility:hidden"
           >
-            <span class="status-badge__dot" aria-hidden="true"></span>
-            <span id="status-badge-text-mobile">{closedText}</span>
+            <small>Today</small>
+            <span class="rstamp" id="status-badge-text-mobile">{closedText}</span>
           </a>
-          <button class="site-nav__burger" id="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+          <button
+            class="site-nav__burger"
+            id="nav-burger"
+            aria-label="Open menu"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+          >
             <span></span><span></span><span></span>
           </button>
         </div>
@@ -110,37 +107,41 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <!-- Mobile drawer -->
       <div class="site-nav__drawer" id="mobile-menu" aria-hidden="true">
-        <a href={`${base}/`} onclick="closeMobileMenu()">Home</a>
-        <a href={`${base}/menu`} onclick="closeMobileMenu()">Menu</a>
-        <a href={`${base}/woodbank`} onclick="closeMobileMenu()">Woodbank</a>
-        <a href={`${base}/photos`} onclick="closeMobileMenu()">Photos</a>
-        <a href={`${base}/#find-us`} onclick="closeMobileMenu()">Find us</a>
+        <a href={`${base}/`}>Home</a>
+        <a href={`${base}/pizzas`}>Pizzas</a>
+        <a href={`${base}/sandwiches`}>Sandwiches</a>
+        <a href={`${base}/photos`}>Photos</a>
+        <a href={`${base}/#find-us`}>Find us</a>
       </div>
     </nav>
 
-    <!-- Page content -->
-    <main id="main">
+    <!-- ── Page content ──────────────────────────────────── -->
+    <main id="main" tabindex="-1">
       <slot />
     </main>
 
-    <!-- Footer -->
+    <!-- ── Footer ───────────────────────────────────────── -->
     <footer class="site-footer">
-      <div class="container container--wide">
+      <div class="wrap">
         <div class="site-footer__grid">
           <div class="site-footer__col">
             <h3>La Cucina Povera</h3>
-            <p>Focaccia sandwiches &amp;<br />Italian street food.</p>
+            <p>Focaccia &amp; Italian<br />street food.</p>
           </div>
 
           <div class="site-footer__col">
             <h3>Opening hours</h3>
             {site.openingHours.map((row: { day: string; hours: string }) => (
-              <p style={row.hours === 'Closed' ? 'opacity:0.4' : ''}>
+              <p style={row.hours === 'Closed' ? 'opacity:0.35' : ''}>
                 {row.day} — {row.hours}
               </p>
             ))}
             {site.hoursNote && (
-              <p style="margin-top:0.75rem; font-size:0.8rem; color:var(--saffron); border-left:2px solid var(--saffron); padding-left:0.6rem; line-height:1.5;">
+              <p
+                data-hours-note-expires={site.hoursNoteExpires ?? ''}
+                hidden={!!site.hoursNoteExpires}
+                style="margin-top:0.6rem; font-size:0.8rem; color:var(--saffron); border-left:2px solid var(--saffron); padding-left:0.5rem; line-height:1.5;"
+              >
                 {site.hoursNote}
               </p>
             )}
@@ -173,7 +174,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <p>&copy; {new Date().getFullYear()} La Cucina Povera · 22 Park Lane · Offerton, Stockport</p>
           <div class="site-footer__social">
             <a href={`${base}/`}>Home</a>
-            <a href={`${base}/menu`}>Menu</a>
+            <a href={`${base}/pizzas`}>Pizzas</a>
+            <a href={`${base}/sandwiches`}>Sandwiches</a>
             <a href={`${base}/photos`}>Photos</a>
             <a href={`${base}/#find-us`}>Find us</a>
           </div>
@@ -181,103 +183,126 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
     </footer>
 
-    <style>
-      .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0,0,0,0);
-        white-space: nowrap;
-        border: 0;
-      }
-    </style>
+    <!-- ── Bottom dock (mobile) ──────────────────────────── -->
+    <!-- ADD MORE DOCK BUTTONS: copy an <a> block below and it auto-fits -->
+    <nav class="dock" aria-label="Quick actions">
+      <a href={`${base}/pizzas`}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 8v4M12 16h.01"/>
+        </svg>
+        Pizzas
+      </a>
+      <a href={`${base}/sandwiches`}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 6h18M3 12h18M3 18h18"/>
+        </svg>
+        Sandwiches
+      </a>
+      <a href={`${base}/#find-us`}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        Find us
+      </a>
+      <a href={`tel:${site.phone}`}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        Call
+      </a>
+      <!-- DOCK SLOT: add more buttons here -->
+    </nav>
 
+    <!-- ── Scripts ───────────────────────────────────────── -->
     <script>
       // Hamburger menu
-      const burger = document.getElementById('nav-burger');
-      const drawer = document.getElementById('mobile-menu');
-      function closeMobileMenu() {
+      const burger = document.querySelector<HTMLButtonElement>('#nav-burger');
+      const drawer = document.querySelector<HTMLElement>('#mobile-menu');
+      const nav    = document.querySelector<HTMLElement>('.site-nav');
+      const mq     = window.matchMedia('(max-width: 900px)');
+      let prevOverflow = '';
+
+      function closeMenu(restoreFocus = false) {
+        if (!burger || !drawer || drawer.getAttribute('aria-hidden') === 'true') return;
         drawer.setAttribute('aria-hidden', 'true');
         burger.setAttribute('aria-expanded', 'false');
+        burger.setAttribute('aria-label', 'Open menu');
         burger.classList.remove('is-open');
-        document.body.style.overflow = '';
+        document.body.style.overflow = prevOverflow;
+        if (restoreFocus) burger.focus();
       }
-      window.closeMobileMenu = closeMobileMenu;
+
       burger?.addEventListener('click', () => {
-        const open = drawer.getAttribute('aria-hidden') === 'false';
-        if (open) {
-          closeMobileMenu();
+        if (!drawer || !mq.matches) return;
+        if (drawer.getAttribute('aria-hidden') === 'false') {
+          closeMenu(true);
         } else {
+          prevOverflow = document.body.style.overflow;
           drawer.setAttribute('aria-hidden', 'false');
           burger.setAttribute('aria-expanded', 'true');
+          burger.setAttribute('aria-label', 'Close menu');
           burger.classList.add('is-open');
           document.body.style.overflow = 'hidden';
+          drawer.querySelector<HTMLAnchorElement>('a')?.focus();
         }
       });
-      // Close drawer on outside click
-      document.addEventListener('click', (e) => {
-        if (drawer?.getAttribute('aria-hidden') === 'false' &&
-            !drawer.contains(e.target) &&
-            !burger.contains(e.target)) {
-          closeMobileMenu();
+      drawer?.addEventListener('click', e => {
+        if (e.target instanceof Element && e.target.closest('a')) closeMenu();
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && drawer?.getAttribute('aria-hidden') === 'false') {
+          e.preventDefault(); closeMenu(true);
         }
+      });
+      document.addEventListener('focusin', e => {
+        if (e.target instanceof Node && !nav?.contains(e.target)) closeMenu();
+      });
+      mq.addEventListener('change', () => {
+        if (!mq.matches) {
+          const inDrawer = drawer?.contains(document.activeElement);
+          closeMenu();
+          if (inDrawer) nav?.querySelector<HTMLAnchorElement>('.site-nav__logo')?.focus();
+        }
+      });
+      document.addEventListener('click', e => {
+        if (e.target instanceof Node && !nav?.contains(e.target)) closeMenu();
       });
     </script>
 
     <script>
-      // Real-time open/closed status — runs in the browser on every page load.
-      // Mirrors the logic in src/utils/openStatus.ts (kept in sync manually).
+      import { computeIsOpen, isHoursNoteCurrent } from '../utils/openStatus';
 
-      const ANCHOR_FRIDAY = new Date('2025-10-10T00:00:00'); // Fri 10 Oct 2025 = open weekend anchor
-
-      function fridayOf(date) {
-        const d = new Date(date);
-        const day = d.getDay();
-        const daysToFriday = day === 0 ? -2 : day === 6 ? -1 : day - 5;
-        d.setDate(d.getDate() + daysToFriday);
-        d.setHours(0, 0, 0, 0);
-        return d;
+      // Show desktop badge on ≥900px only
+      const desktopBadge = document.querySelector<HTMLElement>('#status-badge');
+      if (desktopBadge && window.innerWidth >= 900) {
+        desktopBadge.style.display = '';
       }
 
-      function isOpenWeekend(date) {
-        const thisFriday = fridayOf(date);
-        const anchor = new Date(ANCHOR_FRIDAY);
-        anchor.setHours(0, 0, 0, 0);
-        const weeksDiff = Math.round((thisFriday - anchor) / (7 * 24 * 60 * 60 * 1000));
-        // Use ((n % 2) + 2) % 2 to handle negative weeksDiff correctly in JS
-        return ((weeksDiff % 2) + 2) % 2 === 0;
+      function refreshStatus() {
+        const now = new Date();
+        document.querySelectorAll<HTMLElement>('[data-override]').forEach(badge => {
+          const open = computeIsOpen(now, badge.dataset.override || 'auto');
+          const text = open
+            ? badge.dataset.openText  || 'Open now'
+            : badge.dataset.closedText || 'Closed now';
+          badge.classList.toggle('status-badge--open',   open);
+          badge.classList.toggle('status-badge--closed', !open);
+          badge.setAttribute('aria-label', text);
+          const stamp = badge.querySelector<HTMLElement>('[id^="status-badge-text"]');
+          if (stamp) stamp.textContent = text;
+          badge.style.visibility = 'visible';
+        });
+        document.querySelectorAll<HTMLElement>('[data-hours-note-expires]').forEach(note => {
+          note.hidden = !isHoursNoteCurrent(now, note.dataset.hoursNoteExpires);
+        });
       }
 
-      function computeIsOpen(now, override) {
-        if (override === 'open') return true;
-        if (override === 'closed') return false;
-        const day = now.getDay();
-        const mins = now.getHours() * 60 + now.getMinutes();
-        if (day === 3 || day === 4) return mins >= 1140 && mins < 1320; // Wed/Thu 19:00–22:00
-        if (day === 5 || day === 6 || day === 0) {
-          if (!isOpenWeekend(now)) return false;
-          return mins >= 1020 && mins < 1320; // Fri/Sat/Sun 17:00–22:00
-        }
-        return false;
-      }
-
-      function applyBadge(badgeEl, textEl) {
-        if (!badgeEl || !textEl) return;
-        const override = badgeEl.dataset.override || 'auto';
-        const openText = badgeEl.dataset.openText || 'Open today';
-        const closedText = badgeEl.dataset.closedText || 'Closed today';
-        const open = computeIsOpen(new Date(), override);
-        badgeEl.classList.toggle('status-badge--open', open);
-        badgeEl.classList.toggle('status-badge--closed', !open);
-        badgeEl.setAttribute('aria-label', open ? openText : closedText);
-        textEl.textContent = open ? openText : closedText;
-        badgeEl.style.visibility = 'visible';
-      }
-      applyBadge(document.getElementById('status-badge'), document.getElementById('status-badge-text'));
-      applyBadge(document.getElementById('status-badge-mobile'), document.getElementById('status-badge-text-mobile'));
+      refreshStatus();
+      window.setInterval(refreshStatus, 30_000);
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshStatus(); });
+      window.addEventListener('pageshow', refreshStatus);
     </script>
   </body>
 </html>

@@ -29,8 +29,8 @@ collections:
               - { label: "Auto (use schedule)", value: "auto" }
               - { label: "Force open", value: "open" }
               - { label: "Force closed", value: "closed" }
-          - { label: Open Status Text, name: openStatusText, widget: string, default: "Open today" }
-          - { label: Closed Status Text, name: closedStatusText, widget: string, default: "Closed today" }
+          - { label: Open Status Text, name: openStatusText, widget: string, default: "Open now" }
+          - { label: Closed Status Text, name: closedStatusText, widget: string, default: "Closed now" }
           - label: Opening Hours
             name: openingHours
             widget: list
@@ -41,12 +41,20 @@ collections:
             name: hoursNote
             widget: string
             required: false
-            hint: "e.g. 'Closed this weekend — back Wed 22nd.' Leave blank to hide."
+            hint: "e.g. 'Closed this weekend — back Wed 22nd.' Leave blank to hide. This note does not change the automatic badge; use the override for closures."
+          - label: Hours note last visible date
+            name: hoursNoteExpires
+            widget: datetime
+            format: YYYY-MM-DD
+            date_format: YYYY-MM-DD
+            time_format: false
+            required: false
+            hint: "The note hides after this date in Europe/London time. Leave blank for a permanent note."
           - { label: Address, name: address, widget: string }
           - { label: Phone, name: phone, widget: string }
           - { label: Email, name: email, widget: string }
           - { label: Instagram URL, name: instagramUrl, widget: string }
-          - { label: Facebook URL, name: facebookUrl, widget: string }
+          - { label: Facebook URL, name: facebookUrl, widget: string, required: false }
           - { label: Google Maps URL, name: googleMapsUrl, widget: string }
           - { label: Our Story Text, name: storyText, widget: text }
           - { label: Story Sign-off Name, name: storyName, widget: string }
@@ -68,6 +76,28 @@ collections:
               - { label: Description, name: description, widget: text }
               - { label: Price, name: price, widget: string }
               - { label: "Dietary (v, vg, gf, etc)", name: dietary, widget: string, required: false }
+
+  - name: woodbank
+    label: Woodbank Park
+    files:
+      - name: site
+        label: Park menu and location
+        file: src/content/woodbank/site.json
+        fields:
+          - label: Park Google Maps URL
+            name: googleMapsUrl
+            widget: string
+            required: false
+            hint: "Use the exact stall or entrance pin. Leave blank to hide the directions button."
+          - { label: Location description, name: locationText, widget: text }
+          - { label: Soup description, name: soupText, widget: text }
+          - { label: Focaccia description, name: focacciaText, widget: text }
+          - label: Pizzas
+            name: pizzas
+            widget: list
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Description, name: description, widget: text }
 
   - name: photos
     label: Photo Gallery

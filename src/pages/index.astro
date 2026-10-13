@@ -5,10 +5,12 @@ import Layout from '../layouts/Layout.astro';
 const site = await getEntry('settings', 'site');
 const s = site!.data;
 
+const woodbank = await getEntry('woodbank', 'site');
+const w = woodbank!.data;
+
 const menuEntries = await getCollection('menu');
-// Show only first 3 items from focaccia for homepage preview
 const focaccia = menuEntries.find(e => e.id === 'focaccia');
-const previewItems = focaccia ? focaccia.data.items.slice(0, 3) : [];
+const sandwichItems = focaccia ? focaccia.data.items.slice(0, 3) : [];
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
@@ -23,101 +25,206 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <!-- ======================================================
        HERO
        ====================================================== -->
-  <section class="hero section--cream">
-    <div class="hero__inner container">
-      <!-- Handwritten script logo image -->
-      <img
-        src={`${base}/images/logo-script.png`}
-        alt="La Cucina Povera"
-        class="hero__logo"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-      />
-      <!-- Fallback text logo if image isn't uploaded yet -->
-      <h1 class="hero__fallback-title" style="display:none; font-family:'Cormorant Garamond',Georgia,serif; font-weight:300; font-size:clamp(3rem,10vw,6rem); line-height:1.1; margin-bottom:1.5rem;">
-        La Cucina<br /><em style="font-style:italic; color:#C0644A;">Povera</em>
-      </h1>
-
-      <p class="hero__tagline">{s.tagline}</p>
-
-      <div class="hero__address" style="font-family:'Cormorant SC',Georgia,serif; font-size:0.75rem; letter-spacing:0.16em; text-transform:uppercase; color:#8A7060; margin-bottom:2rem;">
-        {s.address}
-      </div>
-
-      <div class="hero__actions">
-        <a href={`${base}/menu`} class="btn btn--primary">See the menu</a>
-        <a href="#find-us" class="btn btn--outline">Find us</a>
-      </div>
-    </div>
-
-
-  </section>
-
-  <!-- ======================================================
-       MENU PREVIEW
-       ====================================================== -->
-  <section class="section section--beige">
-    <div class="container">
-      <span class="section-label">The menu</span>
-      <div class="section-heading">
-        <h2>On the <em>board.</em></h2>
-      </div>
-
-      <p style="color:#5A4A38; max-width:36rem; margin-bottom:3rem; font-size:1.05rem;">
-        Fresh-baked focaccia, stuffed generously and made properly.
-        Everything made with care, nothing off a shelf.
+  <section class="wrap hero">
+    <div class="hero__text">
+      <!-- Quiet entry — label + name, no giant red stamp -->
+      <p class="hero-kicker">
+        <span class="label">Offerton, Stockport</span>
+      </p>
+      <h1 class="hero-name">La Cucina<br />Povera</h1>
+      <p class="hero-sub">
+        Wood-fired pizza on the way to Woodbank Park, Offerton.<br />
+        Made to order. Worth finding.
       </p>
 
-      <div class="menu-grid" style="max-width:44rem;">
-        {previewItems.map(item => (
-          <article class="menu-item">
-            <div>
-              <h3 class="menu-item__name">
-                {item.name}
-                {item.dietary && (
-                  <span class="menu-item__dietary">({item.dietary})</span>
-                )}
-              </h3>
-              <p class="menu-item__desc">{item.description}</p>
-            </div>
-            <div class="menu-item__price">{item.price}</div>
-          </article>
-        ))}
-      </div>
+      <ul class="facts">
+        <li>
+          <span>Open weekends</span>
+          <b>Fri–Sun · 5pm – 10pm</b>
+        </li>
+        <li>
+          <span>Also Wed &amp; Thu</span>
+          <b>7pm – 10pm</b>
+        </li>
+        <li>
+          <span>Find us</span>
+          <b>22 Park Lane, Offerton</b>
+        </li>
+      </ul>
 
-      <div style="margin-top:2.5rem;">
-        <a href={`${base}/menu`} class="text-link">Full menu</a>
+      <div class="btn-row" style="margin-top:0.5rem;">
+        <a href={`${base}/pizzas`} class="btn btn--ink">Pizza menu</a>
+        <a href="#find-us" class="btn btn--line">Find us</a>
+      </div>
+    </div>
+
+    <div class="hero__media">
+      <div class="hero__wrapped">
+        <img
+          src={`${base}/images/focaccia-loaves.jpg`}
+          alt="Food from La Cucina Povera, Offerton"
+          loading="eager"
+          decoding="async"
+        />
       </div>
     </div>
   </section>
 
   <!-- ======================================================
-       STORY
+       STORY BAND
        ====================================================== -->
-  <section class="section section--cream">
-    <div class="container">
-      <div class="story-section">
-        <div class="story-section__text">
-          <span class="section-label">The story</span>
-          <div class="section-heading">
-            <h2>What <em>we are.</em></h2>
-          </div>
-          <div class="divider"></div>
-          {s.storyText.split('\n').map((para: string) => (
-            <p>{para}</p>
-          ))}
-          <p style="margin-top:1.5rem; font-family:'Cormorant Garamond',Georgia,serif; font-size:1.2rem; font-style:italic; color:#C0644A;">
-            {s.storyName} x
-          </p>
-        </div>
+  <div class="story-band">
+    <div class="wrap">
+      <span class="label" style="color:rgba(255,255,255,0.6);">The idea</span>
+      <h2>Cucina povera:<br />the poor kitchen.</h2>
+      <div class="story-band__body">
+        <p>
+          It's a thing people in the south of Italy have always done — take what you've got,
+          a bit of dough, whatever's good, a proper fire — and make something worth eating.
+          No ceremony. No waste. Food you eat standing up.
+        </p>
+        <p>
+          This is that. A converted outhouse on Park Lane — on the way to Woodbank —
+          and a proper outdoor kitchen out the back. Something we always wanted to do. Now we're doing it.
+        </p>
+        <p>
+          Every pizza is made when you order it. Nothing sits. Nothing's reheated.
+          You find us, we feed you. That's the deal.
+        </p>
+      </div>
+      <div class="btn-row">
+        <a href={`${base}/pizzas`} class="btn btn--ghost">Pizza menu</a>
+        <a href={`${base}/sandwiches`} class="btn btn--ghost">Sandwiches</a>
+      </div>
+    </div>
+  </div>
 
-        <div class="story-section__image">
+  <!-- ======================================================
+       PIZZA PREVIEW
+       ====================================================== -->
+  <section class="wrap block" id="menu-preview">
+    <div class="block__head">
+      <span class="label">Woodbank Park</span>
+      <h2>From the<br /><span style="color:var(--rosso);">oven.</span></h2>
+      <p class="lede">Wood-fired, made to order. Thin base, charred edges, soft in the middle.</p>
+    </div>
+
+    <div class="menu-sheet" style="max-width:600px;">
+      {w.pizzas.slice(0, 4).map((pizza, i) => {
+        const twine = i % 2 === 0
+          ? "M34 14 C28 10, 22 6, 14 9 C8 11, 6 16, 4 14"
+          : "M34 14 C28 18, 22 22, 14 19 C8 17, 6 12, 4 14";
+        const tagAngle = i % 2 === 0 ? "rotate(-2deg)" : "rotate(2deg)";
+        return (
+          <article class="menu-item">
+            <div>
+              <h3 class="menu-item__name">{pizza.name}</h3>
+              <p class="menu-item__desc">{pizza.description}</p>
+            </div>
+            {pizza.price && (
+              <div class="menu-item__price">
+                <svg width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true">
+                  <path d={twine} stroke="#8A6A42" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                  <circle cx="4" cy="14" r="3" stroke="#8A6A42" stroke-width="1.5" fill="#E9DDC6"/>
+                </svg>
+                <span class="price-tag" style={`transform:${tagAngle};`}>{pizza.price}</span>
+              </div>
+            )}
+          </article>
+        );
+      })}
+    </div>
+
+    <div class="btn-row">
+      <a href={`${base}/pizzas`} class="btn btn--line">Full pizza menu</a>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       SANDWICHES — secondary, wholesale angle
+       ====================================================== -->
+  <section style="background:var(--kraft); padding-block:2.25rem 3.25rem;">
+    <div class="wrap block" style="padding-block:0; gap:1.25rem;">
+      <div class="block__head">
+        <span class="label">Also on the counter</span>
+        <h2>Focaccia<br /><span style="color:var(--rosso);">sandwiches.</span></h2>
+        <p class="lede">
+          Fresh-baked, stuffed properly, wrapped in greaseproof.
+          Available from the outhouse at 22 Park Lane — and supplied to local coffee shops
+          including Ranny's on Hempshaw Lane.
+        </p>
+      </div>
+
+      <div class="menu-sheet" style="max-width:600px;">
+        {sandwichItems.map((item, i) => {
+          const twine = i % 2 === 0
+            ? "M34 14 C28 10, 22 6, 14 9 C8 11, 6 16, 4 14"
+            : "M34 14 C28 18, 22 22, 14 19 C8 17, 6 12, 4 14";
+          const tagAngle = i % 2 === 0 ? "rotate(-2deg)" : "rotate(2deg)";
+          return (
+            <article class="menu-item">
+              <div>
+                <h3 class="menu-item__name">
+                  {item.name}
+                  {item.dietary === 'v'  && <span class="menu-item__dietary">Veggie</span>}
+                  {item.dietary === 'vg' && <span class="menu-item__dietary vegan">Vegan</span>}
+                </h3>
+                <p class="menu-item__desc">{item.description}</p>
+              </div>
+              <div class="menu-item__price">
+                <svg width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true">
+                  <path d={twine} stroke="#8A6A42" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                  <circle cx="4" cy="14" r="3" stroke="#8A6A42" stroke-width="1.5" fill="#E9DDC6"/>
+                </svg>
+                <span class="price-tag" style={`transform:${tagAngle};`}>{item.price}</span>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      <div class="btn-row">
+        <a href={`${base}/sandwiches`} class="btn btn--line">Full sandwich menu</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       PHOTOS PREVIEW
+       ====================================================== -->
+  <section style="padding-block:2.25rem 3.25rem;">
+    <div class="wrap block" style="padding-block:0; gap:1.25rem;">
+      <div class="block__head">
+        <span class="label">Photos</span>
+        <h2>Freshly<br /><span style="color:var(--rosso);">fired.</span></h2>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; max-width:500px;">
+        <div style="aspect-ratio:4/3; background:var(--piega); overflow:hidden;">
           <img
             src={`${base}/images/focaccia-loaves.jpg`}
-            alt="Fresh-baked focaccia loaves"
+            alt="Food from La Cucina Povera"
             loading="lazy"
-            decoding="async"
+            style="width:100%; height:100%; object-fit:cover;"
           />
         </div>
+        <div style="aspect-ratio:4/3; background:var(--piega); display:flex; align-items:center; justify-content:center;">
+          <span style="font-family:var(--font-typed); font-size:0.75rem; color:var(--nero-3); text-align:center; padding:0.5rem;">
+            More photos<br />coming soon
+          </span>
+        </div>
+      </div>
+
+      <div>
+        <a href={`${base}/photos`} class="btn btn--line" style="margin-right:0.75rem;">All photos</a>
+        <a
+          href={s.instagramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style="font-family:var(--font-typed); font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--nero-2);"
+        >
+          Have a nosy on Instagram · @la_cucinapovera
+        </a>
       </div>
     </div>
   </section>
@@ -125,15 +232,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <!-- ======================================================
        FIND US
        ====================================================== -->
-  <section class="section section--dark" id="find-us">
-    <div class="container">
-      <span class="section-label" style="color:var(--saffron);">Come say hi</span>
-      <div class="section-heading">
-        <h2 style="color:var(--cream);">Find <em style="color:var(--saffron);">us.</em></h2>
+  <section class="find-us" id="find-us">
+    <div class="wrap block" style="gap:2rem;">
+      <div class="block__head">
+        <span class="label" style="color:rgba(255,255,255,0.5);">Find us</span>
+        <h2>Worth<br /><span style="color:var(--rosso);">finding.</span></h2>
       </div>
 
       <div class="find-us-grid">
-        <!-- Hours -->
         <div>
           <table class="hours-table">
             {s.openingHours.map((row: { day: string; hours: string }) => (
@@ -145,63 +251,59 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </table>
 
           {s.hoursNote && (
-            <div style="margin-top:1.5rem; padding:1rem 1.25rem; border-left:2px solid var(--saffron); background:rgba(255,255,255,0.05);">
-              <p style="font-size:0.9rem; color:rgba(255,255,255,0.75); line-height:1.6;">
-                <strong style="color:var(--saffron); font-family:'Cormorant SC',Georgia,serif; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; display:block; margin-bottom:0.3rem;">This week</strong>
-                {s.hoursNote}
-              </p>
+            <div
+              class="hours-note"
+              data-hours-note-expires={s.hoursNoteExpires ?? ''}
+              hidden={!!s.hoursNoteExpires}
+            >
+              <p><strong>This week</strong>{s.hoursNote}</p>
             </div>
           )}
-
-          <div style="margin-top:2rem; display:flex; gap:1rem; flex-wrap:wrap;">
-            <a
-              href={s.googleMapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn--ghost"
-            >
-              Get directions
-            </a>
-            <a href={`mailto:${s.email}`} class="btn btn--ghost">
-              Email us
-            </a>
-          </div>
         </div>
 
-        <!-- Address + socials -->
         <div>
-          <p style="font-family:'Cormorant Garamond',Georgia,serif; font-size:1.5rem; font-weight:300; color:var(--cream); line-height:1.6; margin-bottom:2rem;">
-            {s.address}
+          <p style="font-family:var(--font-stamp); font-size:clamp(1.25rem,4vw,1.75rem); text-transform:uppercase; color:var(--carta); line-height:1.3; margin-bottom:0.5rem;">
+            Round the back of<br />22 Park Lane
           </p>
-          <p style="color:rgba(255,255,255,0.5); margin-bottom:0.5rem;">
-            <a href={`tel:${s.phone}`} style="color:rgba(255,255,255,0.7);">{s.phone}</a>
-          </p>
-          <p style="color:rgba(255,255,255,0.5); margin-bottom:2rem;">
-            <a href={`mailto:${s.email}`} style="color:rgba(255,255,255,0.7);">{s.email}</a>
+          <p style="font-family:var(--font-typed); font-size:0.85rem; color:rgba(255,255,255,0.45); margin-bottom:1.5rem;">
+            Offerton, Stockport — not obvious from the outside. That's part of it.
           </p>
 
-          <div style="display:flex; gap:1.5rem;">
-            <a
-              href={s.instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style="font-family:'Cormorant SC',Georgia,serif; font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.6);"
-            >
-              Instagram ↗
+          <div class="contact-list">
+            <a href={s.googleMapsUrl} target="_blank" rel="noopener noreferrer">
+              <span>Directions</span>
+              Get directions ↗
             </a>
-            {s.facebookUrl && (
-              <a
-                href={s.facebookUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style="font-family:'Cormorant SC',Georgia,serif; font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.6);"
-              >
-                Facebook ↗
-              </a>
-            )}
+            <a href={`tel:${s.phone}`}>
+              <span>Call</span>
+              {s.phone}
+            </a>
+            <a href={`mailto:${s.email}`}>
+              <span>Email</span>
+              {s.email}
+            </a>
+            <a href={s.instagramUrl} target="_blank" rel="noopener noreferrer">
+              <span>Instagram</span>
+              @la_cucinapovera
+            </a>
           </div>
         </div>
       </div>
+
+      <p style="font-family:var(--font-stamp); font-size:clamp(1.1rem,4vw,1.5rem); text-transform:uppercase; color:rgba(255,255,255,0.2); text-align:right; margin-top:1rem;">
+        Mangia! Before it goes cold.
+      </p>
     </div>
   </section>
 </Layout>
+
+<style>
+.story-band__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  font-size: 1.06rem;
+  max-width: 60ch;
+  opacity: 0.9;
+}
+</style>

@@ -1,0 +1,131 @@
+---
+import { getEntry, getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const site = await getEntry('settings', 'site');
+const s = site!.data;
+
+const menuEntries = await getCollection('menu');
+const focaccia = menuEntries.find(e => e.id === 'focaccia');
+
+const woodbank = await getEntry('woodbank', 'site');
+const w = woodbank!.data;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout
+  title="Sandwiches"
+  description="Focaccia sandwiches and soups — fresh-baked, stuffed properly. La Cucina Povera, Offerton, Stockport."
+  openText={s.openStatusText}
+  closedText={s.closedStatusText}
+  scheduleOverride={s.scheduleOverride}
+>
+  <!-- Page header -->
+  <div class="page-hero">
+    <div class="wrap">
+      <span class="label">Sandwiches</span>
+      <h1>On the counter<br /><span style="color:var(--rosso);">tonight.</span></h1>
+      <p class="lede" style="margin-top:0.875rem;">
+        Fresh-baked focaccia, stuffed properly, wrapped in greaseproof and passed out the back.
+        Everything made with real ingredients. Nothing off a shelf.
+      </p>
+      <p class="lede" style="margin-top:0.5rem; font-family:var(--font-typed); font-size:0.88rem; color:var(--nero-3);">
+        We also supply to coffee shops — get in touch if you're interested in wholesale.
+      </p>
+    </div>
+  </div>
+
+  <!-- Focaccia sandwiches -->
+  {focaccia && (
+    <section class="wrap block">
+      <div class="block__head">
+        <span class="label">Focaccia sandwiches</span>
+        <h2 style="color:var(--rosso);">{focaccia.data.category}</h2>
+        {focaccia.data.description && (
+          <p class="lede">{focaccia.data.description}</p>
+        )}
+      </div>
+
+      <!-- Deli price list -->
+      <div class="menu-sheet" style="max-width:640px;">
+        {focaccia.data.items.map((item, i) => {
+          // Alternate curve: even rows curve up-then-down, odd rows curve down-then-up
+          const twine = i % 2 === 0
+            ? "M34 14 C28 10, 22 6, 14 9 C8 11, 6 16, 4 14"   // curves up first
+            : "M34 14 C28 18, 22 22, 14 19 C8 17, 6 12, 4 14"; // curves down first
+          // Alternate slight tag rotation so it looks like it's hanging naturally
+          const tagAngle = i % 2 === 0 ? "rotate(-2deg)" : "rotate(2deg)";
+          return (
+            <article class="menu-item">
+              <div>
+                <h3 class="menu-item__name">
+                  {item.name}
+                  {item.dietary === 'v'  && <span class="menu-item__dietary">Veggie</span>}
+                  {item.dietary === 'vg' && <span class="menu-item__dietary vegan">Vegan</span>}
+                  {item.dietary === 'gf' && <span class="menu-item__dietary" style="background:var(--saffron); color:var(--nero);">GF</span>}
+                </h3>
+                <p class="menu-item__desc">{item.description}</p>
+              </div>
+              <div class="menu-item__price">
+                <svg width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true">
+                  <path d={twine} stroke="#8A6A42" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                  <circle cx="4" cy="14" r="3" stroke="#8A6A42" stroke-width="1.5" fill="#E9DDC6"/>
+                </svg>
+                <span class="price-tag" style={`transform:${tagAngle};`}>{item.price}</span>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      <p style="font-family:var(--font-typed); font-size:0.8rem; color:var(--nero-3); border-top:1px dashed var(--piega); padding-top:1rem; max-width:640px;">
+        (v) vegetarian &nbsp;·&nbsp; (vg) vegan &nbsp;·&nbsp; please ask about allergens before ordering.
+      </p>
+    </section>
+  )}
+
+  <!-- Soups -->
+  <section style="background:var(--kraft); padding-block:2.25rem 3.25rem;">
+    <div class="wrap block" style="padding-block:0; gap:1.25rem;">
+      <div class="block__head">
+        <span class="label">Also on</span>
+        <h2>Something<br /><span style="color:var(--rosso);">warm.</span></h2>
+      </div>
+      {w.soupText.split('\n').filter(Boolean).map((para: string) => (
+        <p class="lede">{para}</p>
+      ))}
+    </div>
+  </section>
+
+  <!-- Wholesale note -->
+  <section class="wrap block" style="gap:1rem;">
+    <div class="block__head">
+      <span class="label">Wholesale</span>
+      <h2>We supply<br /><span style="color:var(--rosso);">coffee shops.</span></h2>
+    </div>
+    <p class="lede">
+      Most of our focaccia goes out to local coffee shops before it ever hits the hatch.
+      If you're a café or deli and want fresh-baked focaccia sandwiches on your counter,
+      get in touch.
+    </p>
+    <div class="btn-row">
+      <a href={`mailto:${s.email}`} class="btn btn--ink">Get in touch</a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="background:var(--rosso); color:var(--white); padding-block:2.5rem 3.5rem;">
+    <div class="wrap" style="display:flex; flex-direction:column; gap:1rem;">
+      <span class="label" style="color:rgba(255,255,255,0.6);">Come in</span>
+      <h2>Come and try it.</h2>
+      <p style="font-size:1.05rem; max-width:50ch; opacity:0.9;">
+        Round the back of {s.address}. Follow the smell.
+      </p>
+      <div class="btn-row">
+        <a href={`${base}/#find-us`} class="btn btn--ghost">Find us</a>
+        <a href={`tel:${s.phone}`} class="btn btn--ghost">Call us</a>
+      </div>
+    </div>
+  </section>
+</Layout>
