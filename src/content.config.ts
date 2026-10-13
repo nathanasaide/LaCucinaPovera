@@ -62,7 +62,12 @@ const woodbankCollection = defineCollection({
     pizzas: z.array(z.object({
       name: z.string(),
       description: z.string(),
+      price: z.string().optional(),
     })),
+    dippers: z.array(z.object({
+      name: z.string(),
+      price: z.string(),
+    })).optional(),
   }),
 });
 

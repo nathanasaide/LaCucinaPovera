@@ -56,36 +56,83 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <section style="background:var(--kraft); padding-block:2.25rem 3.25rem;">
     <div class="wrap block" style="padding-block:0; gap:1.5rem;">
       <div class="block__head">
-        <span class="label">The pizzas</span>
+        <span class="label">10–11 inch · wood-fired · made to order</span>
         <h2>From the<br /><span style="color:var(--rosso);">oven.</span></h2>
       </div>
       <p class="lede">
-        Wood-fired, made to order. Each one built on a proper base —
-        thin, charred at the edges, soft in the middle.
+        Thin base, charred at the edges, soft in the middle. Every one made when you order it —
+        nothing sits under a lamp.
       </p>
 
       <div class="menu-sheet" style="max-width:640px;">
-        {w.pizzas.map(pizza => (
-          <article class="menu-item" style="grid-template-columns:1fr;">
-            <div>
-              <h3 class="menu-item__name">{pizza.name}</h3>
-              <p class="menu-item__desc">{pizza.description}</p>
-            </div>
-          </article>
-        ))}
+        {w.pizzas.map((pizza, i) => {
+          const twine = i % 2 === 0
+            ? "M34 14 C28 10, 22 6, 14 9 C8 11, 6 16, 4 14"
+            : "M34 14 C28 18, 22 22, 14 19 C8 17, 6 12, 4 14";
+          const tagAngle = i % 2 === 0 ? "rotate(-2deg)" : "rotate(2deg)";
+          return (
+            <article class="menu-item">
+              <div>
+                <h3 class="menu-item__name">{pizza.name}</h3>
+                <p class="menu-item__desc">{pizza.description}</p>
+              </div>
+              {pizza.price && (
+                <div class="menu-item__price">
+                  <svg width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true">
+                    <path d={twine} stroke="#8A6A42" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                    <circle cx="4" cy="14" r="3" stroke="#8A6A42" stroke-width="1.5" fill="#E9DDC6"/>
+                  </svg>
+                  <span class="price-tag" style={`transform:${tagAngle};`}>{pizza.price}</span>
+                </div>
+              )}
+            </article>
+          );
+        })}
       </div>
 
       <p style="font-family:var(--font-typed); font-size:0.8rem; color:var(--nero-3); border-top:1px dashed var(--piega); padding-top:1rem; max-width:640px;">
-        Folded Neapolitan-style or boxed to take away — your call.
-        Please ask about allergens before ordering.
+        Boxed to take away or eat as you go. Please ask about allergens before ordering.
       </p>
     </div>
   </section>
 
-  <!-- Focaccia mention -->
+  <!-- Dippers -->
+  {w.dippers && w.dippers.length > 0 && (
+    <section class="wrap block" style="gap:1rem;">
+      <div class="block__head">
+        <span class="label">Add on</span>
+        <h2>Crust<br /><span style="color:var(--rosso);">dippers.</span></h2>
+        <p class="lede">For the crust. Worth it.</p>
+      </div>
+      <div class="menu-sheet" style="max-width:480px;">
+        {w.dippers.map((dip, i) => {
+          const twine = i % 2 === 0
+            ? "M34 14 C28 10, 22 6, 14 9 C8 11, 6 16, 4 14"
+            : "M34 14 C28 18, 22 22, 14 19 C8 17, 6 12, 4 14";
+          const tagAngle = i % 2 === 0 ? "rotate(-2deg)" : "rotate(2deg)";
+          return (
+            <article class="menu-item">
+              <div>
+                <h3 class="menu-item__name">{dip.name}</h3>
+              </div>
+              <div class="menu-item__price">
+                <svg width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true">
+                  <path d={twine} stroke="#8A6A42" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                  <circle cx="4" cy="14" r="3" stroke="#8A6A42" stroke-width="1.5" fill="#E9DDC6"/>
+                </svg>
+                <span class="price-tag" style={`transform:${tagAngle};`}>{dip.price}</span>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  )}
+
+  <!-- Also on -->
   <section class="wrap block" style="gap:1rem;">
     <div class="block__head">
-      <span class="label">Also at the park</span>
+      <span class="label">Also on</span>
       <h2>Focaccia &amp;<br /><span style="color:var(--rosso);">soups.</span></h2>
     </div>
     {w.focacciaText.split('\n').filter(Boolean).map((para: string) => (

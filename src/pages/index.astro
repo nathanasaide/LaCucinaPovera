@@ -114,12 +114,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         const twine = i % 2 === 0
           ? "M34 14 C28 10, 22 6, 14 9 C8 11, 6 16, 4 14"
           : "M34 14 C28 18, 22 22, 14 19 C8 17, 6 12, 4 14";
+        const tagAngle = i % 2 === 0 ? "rotate(-2deg)" : "rotate(2deg)";
         return (
-          <article class="menu-item" style="grid-template-columns:1fr;">
+          <article class="menu-item">
             <div>
               <h3 class="menu-item__name">{pizza.name}</h3>
               <p class="menu-item__desc">{pizza.description}</p>
             </div>
+            {pizza.price && (
+              <div class="menu-item__price">
+                <svg width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true">
+                  <path d={twine} stroke="#8A6A42" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                  <circle cx="4" cy="14" r="3" stroke="#8A6A42" stroke-width="1.5" fill="#E9DDC6"/>
+                </svg>
+                <span class="price-tag" style={`transform:${tagAngle};`}>{pizza.price}</span>
+              </div>
+            )}
           </article>
         );
       })}
