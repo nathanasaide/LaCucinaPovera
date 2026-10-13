@@ -23,18 +23,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   scheduleOverride={s.scheduleOverride}
 >
   <!-- ======================================================
-       HERO — pizza first
+       HERO
        ====================================================== -->
   <section class="wrap hero">
     <div class="hero__text">
-      <h1>
-        Wood-fired<br />
-        <span style="color:var(--rosso);">pizza.</span>
-      </h1>
-
-      <p class="lede">
-        Made to order from an outdoor kitchen at Woodbank Park, Offerton.
-        Bring the dog. Come as you are.
+      <!-- Quiet entry — label + name, no giant red stamp -->
+      <p class="hero-kicker">
+        <span class="label">Offerton, Stockport</span>
+      </p>
+      <h1 class="hero-name">La Cucina<br />Povera</h1>
+      <p class="hero-sub">
+        Wood-fired pizza at Woodbank Park.<br />
+        Focaccia sandwiches from the outhouse on Park Lane.
       </p>
 
       <ul class="facts">
@@ -47,13 +47,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <b>7pm – 10pm</b>
         </li>
         <li>
-          <span>Woodbank Park</span>
-          <b>Offerton, Stockport</b>
+          <span>Find us at</span>
+          <b>Woodbank Park &amp; 22 Park Lane</b>
         </li>
       </ul>
 
       <div class="btn-row" style="margin-top:0.5rem;">
-        <a href={`${base}/pizzas`} class="btn btn--ink">See the pizza menu</a>
+        <a href={`${base}/pizzas`} class="btn btn--ink">Pizza menu</a>
         <a href="#find-us" class="btn btn--line">Find us</a>
       </div>
     </div>
@@ -62,7 +62,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="hero__wrapped">
         <img
           src={`${base}/images/focaccia-loaves.jpg`}
-          alt="Wood-fired pizza from La Cucina Povera"
+          alt="Food from La Cucina Povera, Offerton"
           loading="eager"
           decoding="async"
         />

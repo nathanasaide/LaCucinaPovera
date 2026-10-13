@@ -440,6 +440,30 @@ p { margin: 0; line-height: 1.65; }
   gap: 1rem;
 }
 
+/* Hero name — calm, not stamp-loud */
+.hero-kicker {
+  margin-bottom: 0.25rem;
+}
+
+.hero-name {
+  font-family: var(--font-stamp);
+  font-size: clamp(2.2rem, 8vw, 4rem);
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--nero);
+  margin-bottom: 0.75rem;
+  /* No red here — just the dark ink */
+}
+
+.hero-sub {
+  font-family: var(--font-typed);
+  font-size: 1rem;
+  color: var(--nero-2);
+  line-height: 1.65;
+  max-width: 38ch;
+  margin-bottom: 1rem;
+}
+
 /* Quick-facts strip */
 .facts {
   list-style: none;
