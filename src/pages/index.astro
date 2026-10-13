@@ -5,9 +5,12 @@ import Layout from '../layouts/Layout.astro';
 const site = await getEntry('settings', 'site');
 const s = site!.data;
 
+const woodbank = await getEntry('woodbank', 'site');
+const w = woodbank!.data;
+
 const menuEntries = await getCollection('menu');
 const focaccia = menuEntries.find(e => e.id === 'focaccia');
-const allItems = focaccia ? focaccia.data.items : [];
+const sandwichItems = focaccia ? focaccia.data.items.slice(0, 3) : [];
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
@@ -20,49 +23,46 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   scheduleOverride={s.scheduleOverride}
 >
   <!-- ======================================================
-       HERO
+       HERO — pizza first
        ====================================================== -->
   <section class="wrap hero">
-    <!-- Text column -->
     <div class="hero__text">
       <h1>
-        Hot<br />
-        <span style="color:var(--rosso);">focaccia.</span>
+        Wood-fired<br />
+        <span style="color:var(--rosso);">pizza.</span>
       </h1>
 
       <p class="lede">
-        Stuffed, wrapped in greaseproof and passed out the back of a converted outhouse
-        in Offerton. Proper food, proper portions, dead good.
+        Made to order from an outdoor kitchen at Woodbank Park, Offerton.
+        Bring the dog. Come as you are.
       </p>
 
-      <!-- Quick-facts strip -->
       <ul class="facts">
-        <li>
-          <span>Wed &amp; Thu</span>
-          <b>7pm – 10pm</b>
-        </li>
         <li>
           <span>Open weekends</span>
           <b>Fri–Sun · 5pm – 10pm</b>
         </li>
         <li>
-          <span>Round the back of</span>
-          <b>{s.address}</b>
+          <span>Also Wed &amp; Thu</span>
+          <b>7pm – 10pm</b>
+        </li>
+        <li>
+          <span>Woodbank Park</span>
+          <b>Offerton, Stockport</b>
         </li>
       </ul>
 
       <div class="btn-row" style="margin-top:0.5rem;">
-        <a href={`${base}/sandwiches`} class="btn btn--ink">What's on the counter</a>
+        <a href={`${base}/pizzas`} class="btn btn--ink">See the pizza menu</a>
         <a href="#find-us" class="btn btn--line">Find us</a>
       </div>
     </div>
 
-    <!-- Photo -->
     <div class="hero__media">
       <div class="hero__wrapped">
         <img
           src={`${base}/images/focaccia-loaves.jpg`}
-          alt="Fresh-baked focaccia loaves cooling on a rack"
+          alt="Wood-fired pizza from La Cucina Povera"
           loading="eager"
           decoding="async"
         />
@@ -71,7 +71,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </section>
 
   <!-- ======================================================
-       STORY BAND
+       STORY BAND — pizza/outdoor kitchen story
        ====================================================== -->
   <div class="story-band">
     <div class="wrap">
@@ -79,83 +79,118 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <h2>Cucina povera:<br />the poor kitchen.</h2>
       <div class="story-band__body">
         <p>
-          Southern Italy's been making summat out of nowt for centuries: yesterday's bread,
-          a few veg, a glug of good oil, and nothing wasted. Naples turned it into food
-          you eat on the move — out of a hatch, off a counter, no fuss.
+          Southern Italy's been making summat out of nowt for centuries: a proper base,
+          a few good toppings, a hot oven, and nothing wasted.
+          Naples turned it into food you eat standing up. We brought it to Offerton.
         </p>
         <p>
-          We bake the focaccia in a converted outhouse round the back of a house in Offerton.
-          It's not fancy. The food is. Stuff it with fillings worth your money, wrap it up,
-          and it's still warm when you get home.
+          Wood-fired pizzas made to order at Woodbank Park — and focaccia sandwiches
+          out the back of a converted outhouse on Park Lane.
+          It's not fancy. The food is.
         </p>
       </div>
       <div class="btn-row">
-        <a href={`${base}/sandwiches`} class="btn btn--ghost">See the sandwiches</a>
+        <a href={`${base}/pizzas`} class="btn btn--ghost">Pizza menu</a>
+        <a href={`${base}/sandwiches`} class="btn btn--ghost">Sandwiches</a>
       </div>
     </div>
   </div>
 
   <!-- ======================================================
-       MENU PREVIEW — "On the counter tonight"
+       PIZZA PREVIEW
        ====================================================== -->
   <section class="wrap block" id="menu-preview">
     <div class="block__head">
-      <span class="label">Sandwiches</span>
-      <h2>On the counter<br /><span style="color:var(--rosso);">tonight.</span></h2>
+      <span class="label">Woodbank Park</span>
+      <h2>From the<br /><span style="color:var(--rosso);">oven.</span></h2>
+      <p class="lede">Wood-fired, made to order. Thin base, charred edges, soft in the middle.</p>
     </div>
 
     <div class="menu-sheet" style="max-width:600px;">
-      {allItems.map((item, i) => {
+      {w.pizzas.slice(0, 4).map((pizza, i) => {
         const twine = i % 2 === 0
           ? "M34 14 C28 10, 22 6, 14 9 C8 11, 6 16, 4 14"
           : "M34 14 C28 18, 22 22, 14 19 C8 17, 6 12, 4 14";
-        const tagAngle = i % 2 === 0 ? "rotate(-2deg)" : "rotate(2deg)";
         return (
-          <article class="menu-item">
+          <article class="menu-item" style="grid-template-columns:1fr;">
             <div>
-              <h3 class="menu-item__name">
-                {item.name}
-                {item.dietary === 'v' && <span class="menu-item__dietary">Veggie</span>}
-                {item.dietary === 'vg' && <span class="menu-item__dietary vegan">Vegan</span>}
-              </h3>
-              <p class="menu-item__desc">{item.description}</p>
-            </div>
-            <div class="menu-item__price">
-              <svg width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true">
-                <path d={twine} stroke="#8A6A42" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-                <circle cx="4" cy="14" r="3" stroke="#8A6A42" stroke-width="1.5" fill="#E9DDC6"/>
-              </svg>
-              <span class="price-tag" style={`transform:${tagAngle};`}>{item.price}</span>
+              <h3 class="menu-item__name">{pizza.name}</h3>
+              <p class="menu-item__desc">{pizza.description}</p>
             </div>
           </article>
         );
       })}
     </div>
 
-    <p style="font-family:var(--font-typed); font-size:0.8rem; color:var(--nero-3);">
-      Got allergies? Ask us before you order.
-    </p>
     <div class="btn-row">
-      <a href={`${base}/sandwiches`} class="btn btn--line">Full sandwich menu</a>
-      <a href={`${base}/pizzas`} class="btn btn--line">Pizzas at Woodbank</a>
+      <a href={`${base}/pizzas`} class="btn btn--line">Full pizza menu</a>
     </div>
   </section>
 
   <!-- ======================================================
-       PHOTOS PREVIEW — "Freshly baked"
+       SANDWICHES — secondary, wholesale angle
        ====================================================== -->
   <section style="background:var(--kraft); padding-block:2.25rem 3.25rem;">
     <div class="wrap block" style="padding-block:0; gap:1.25rem;">
       <div class="block__head">
+        <span class="label">Also on the counter</span>
+        <h2>Focaccia<br /><span style="color:var(--rosso);">sandwiches.</span></h2>
+        <p class="lede">
+          Fresh-baked, stuffed properly, wrapped in greaseproof.
+          Available from the outhouse at 22 Park Lane — and supplied to local coffee shops
+          including Ranny's on Hempshaw Lane.
+        </p>
+      </div>
+
+      <div class="menu-sheet" style="max-width:600px;">
+        {sandwichItems.map((item, i) => {
+          const twine = i % 2 === 0
+            ? "M34 14 C28 10, 22 6, 14 9 C8 11, 6 16, 4 14"
+            : "M34 14 C28 18, 22 22, 14 19 C8 17, 6 12, 4 14";
+          const tagAngle = i % 2 === 0 ? "rotate(-2deg)" : "rotate(2deg)";
+          return (
+            <article class="menu-item">
+              <div>
+                <h3 class="menu-item__name">
+                  {item.name}
+                  {item.dietary === 'v'  && <span class="menu-item__dietary">Veggie</span>}
+                  {item.dietary === 'vg' && <span class="menu-item__dietary vegan">Vegan</span>}
+                </h3>
+                <p class="menu-item__desc">{item.description}</p>
+              </div>
+              <div class="menu-item__price">
+                <svg width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true">
+                  <path d={twine} stroke="#8A6A42" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                  <circle cx="4" cy="14" r="3" stroke="#8A6A42" stroke-width="1.5" fill="#E9DDC6"/>
+                </svg>
+                <span class="price-tag" style={`transform:${tagAngle};`}>{item.price}</span>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      <div class="btn-row">
+        <a href={`${base}/sandwiches`} class="btn btn--line">Full sandwich menu</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       PHOTOS PREVIEW
+       ====================================================== -->
+  <section style="padding-block:2.25rem 3.25rem;">
+    <div class="wrap block" style="padding-block:0; gap:1.25rem;">
+      <div class="block__head">
         <span class="label">Photos</span>
-        <h2>Freshly<br /><span style="color:var(--rosso);">baked.</span></h2>
+        <h2>Freshly<br /><span style="color:var(--rosso);">fired.</span></h2>
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; max-width:500px;">
         <div style="aspect-ratio:4/3; background:var(--piega); overflow:hidden;">
           <img
             src={`${base}/images/focaccia-loaves.jpg`}
-            alt="The day's bake"
+            alt="Food from La Cucina Povera"
             loading="lazy"
             style="width:100%; height:100%; object-fit:cover;"
           />
@@ -188,11 +223,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="wrap block" style="gap:2rem;">
       <div class="block__head">
         <span class="label" style="color:rgba(255,255,255,0.5);">Find us</span>
-        <h2>Round<br /><span style="color:var(--rosso);">the back.</span></h2>
+        <h2>Come find<br /><span style="color:var(--rosso);">the smoke.</span></h2>
       </div>
 
       <div class="find-us-grid">
-        <!-- Hours -->
         <div>
           <table class="hours-table">
             {s.openingHours.map((row: { day: string; hours: string }) => (
@@ -214,13 +248,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           )}
         </div>
 
-        <!-- Contact -->
         <div>
           <p style="font-family:var(--font-stamp); font-size:clamp(1.25rem,4vw,1.75rem); text-transform:uppercase; color:var(--carta); line-height:1.3; margin-bottom:0.5rem;">
-            Round the back of<br />22 Park Lane
+            Woodbank Park<br />&amp; 22 Park Lane
           </p>
           <p style="font-family:var(--font-typed); font-size:0.85rem; color:rgba(255,255,255,0.45); margin-bottom:1.5rem;">
-            Offerton, Stockport, SK1 4JS — follow the signs / smell the bread
+            Offerton, Stockport — follow the smoke
           </p>
 
           <div class="contact-list">
