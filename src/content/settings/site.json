@@ -1,16 +1,16 @@
 {
   "siteName": "La Cucina Povera",
   "tagline": "Focaccia sandwiches & Italian street food.",
-  "isOpen": true,
-  "openStatusText": "Open today",
-  "closedStatusText": "Closed today",
+  "openStatusText": "Open now",
+  "closedStatusText": "Closed now",
   "openingHours": [
     { "day": "Wednesday", "hours": "7pm – 10pm" },
     { "day": "Thursday", "hours": "7pm – 10pm" },
     { "day": "Fri – Sun (alternate weekends)", "hours": "5pm – 10pm" },
     { "day": "Mon, Tue & off-weekends", "hours": "Closed" }
   ],
-  "hoursNote": "This weekend (11–13 Oct) we're open Fri–Sun 4–9pm. Next weekend (18–20 Oct) closed — back Wed 22nd.",
+  "hoursNote": "",
+  "hoursNoteExpires": "",
   "address": "22 Park Lane, Offerton, Stockport, SK1 4JS",
   "phone": "07761655161",
   "email": "impoverishedkitchen@gmail.com",

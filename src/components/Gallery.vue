@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { shallowRef, computed } from 'vue'
+import LightboxDialog from './LightboxDialog.vue'
 
 interface Photo {
   src: string
@@ -9,7 +10,7 @@ interface Photo {
 
 const props = defineProps<{ photos: Photo[] }>()
 
-const lightboxIndex = ref<number | null>(null)
+const lightboxIndex = shallowRef<number | null>(null)
 
 const currentPhoto = computed(() =>
   lightboxIndex.value !== null ? props.photos[lightboxIndex.value] : null
@@ -17,36 +18,21 @@ const currentPhoto = computed(() =>
 
 function open(i: number) {
   lightboxIndex.value = i
-  document.body.style.overflow = 'hidden'
 }
 
 function close() {
   lightboxIndex.value = null
-  document.body.style.overflow = ''
 }
 
 function prev() {
-  if (lightboxIndex.value === null) return
+  if (lightboxIndex.value === null || !props.photos.length) return
   lightboxIndex.value = (lightboxIndex.value - 1 + props.photos.length) % props.photos.length
 }
 
 function next() {
-  if (lightboxIndex.value === null) return
+  if (lightboxIndex.value === null || !props.photos.length) return
   lightboxIndex.value = (lightboxIndex.value + 1) % props.photos.length
 }
-
-function handleKey(e: KeyboardEvent) {
-  if (lightboxIndex.value === null) return
-  if (e.key === 'Escape') close()
-  if (e.key === 'ArrowLeft') prev()
-  if (e.key === 'ArrowRight') next()
-}
-
-onMounted(() => window.addEventListener('keydown', handleKey))
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKey)
-  document.body.style.overflow = ''
-})
 </script>
 
 <template>
@@ -55,6 +41,7 @@ onUnmounted(() => {
     <button
       v-for="(photo, i) in photos"
       :key="i"
+      type="button"
       class="gallery-thumb"
       :aria-label="`View photo: ${photo.alt}`"
       @click="open(i)"
@@ -69,19 +56,17 @@ onUnmounted(() => {
   </div>
 
   <!-- Lightbox -->
-  <Teleport to="body">
-    <div
-      v-if="currentPhoto"
-      class="lightbox"
-      role="dialog"
-      aria-modal="true"
-      :aria-label="`Photo ${(lightboxIndex ?? 0) + 1} of ${photos.length}`"
-      @click.self="close"
-    >
-      <button class="lightbox__close" @click="close" aria-label="Close">&times;</button>
-
+  <LightboxDialog
+    :open="!!currentPhoto"
+    :label="`Photo ${(lightboxIndex ?? 0) + 1} of ${photos.length}`"
+    @close="close"
+    @keydown.left.prevent="prev"
+    @keydown.right.prevent="next"
+  >
+    <template v-if="currentPhoto">
       <button
         v-if="photos.length > 1"
+        type="button"
         class="lightbox__nav lightbox__nav--prev"
         @click="prev"
         aria-label="Previous photo"
@@ -95,6 +80,7 @@ onUnmounted(() => {
 
       <button
         v-if="photos.length > 1"
+        type="button"
         class="lightbox__nav lightbox__nav--next"
         @click="next"
         aria-label="Next photo"
@@ -103,6 +89,6 @@ onUnmounted(() => {
       <p v-if="currentPhoto.caption" class="lightbox__caption">
         {{ currentPhoto.caption }}
       </p>
-    </div>
-  </Teleport>
+    </template>
+  </LightboxDialog>
 </template>

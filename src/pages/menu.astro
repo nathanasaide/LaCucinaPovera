@@ -1,7 +1,6 @@
 ---
 import { getEntry, getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
-import ImageLightbox from '../components/ImageLightbox.vue';
 
 const site = await getEntry('settings', 'site');
 const s = site!.data;
@@ -19,113 +18,78 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   closedText={s.closedStatusText}
   scheduleOverride={s.scheduleOverride}
 >
-  <!-- Page hero -->
-  <section class="page-hero page-hero--beige">
-    <div class="container">
-      <span class="section-label">The menu</span>
-      <h1>What's <em style="font-style:italic; color:var(--terracotta);">on.</em></h1>
-      <p style="margin-top:1rem; font-size:1.1rem; color:#5A4A38; max-width:36rem;">
-        Fresh-baked focaccia, stuffed generously, made properly. Everything here is made
-        with real ingredients from real people.
+  <!-- Page header -->
+  <div class="page-hero">
+    <div class="wrap">
+      <span class="label">Menu</span>
+      <h1>On the counter<br /><span style="color:var(--rosso);">tonight.</span></h1>
+      <p class="lede" style="margin-top:0.875rem;">
+        Fresh-baked focaccia, stuffed properly, wrapped in greaseproof.
+        Everything made with real ingredients. Nothing off a shelf.
       </p>
     </div>
-  </section>
+  </div>
 
   <!-- Focaccia sandwiches -->
   {focaccia && (
-    <section class="section section--cream">
-      <div class="container">
-        <div class="menu-page-grid">
-          <!-- Category header -->
-          <div class="menu-page-sticky">
-            <h2 style="font-size:clamp(2.5rem,6vw,4rem); line-height:1.05;">
-              <em style="font-style:italic; display:block; color:var(--terracotta); text-decoration:underline; text-decoration-color:var(--terracotta);">
-                {focaccia.data.category}
-              </em>
-            </h2>
-            {focaccia.data.description && (
-              <p style="margin-top:1rem; color:#5A4A38; font-size:1rem;">{focaccia.data.description}</p>
-            )}
-            <!-- Menu card image — click to enlarge -->
-            <div style="margin-top:2rem; background:var(--warm-beige); padding:1.5rem; border-radius:2px;">
-              <ImageLightbox
-                src={`${base}/images/menu-card.jpg`}
-                alt="La Cucina Povera menu card"
-                client:load
-              />
-            </div>
-          </div>
-
-          <!-- Menu items -->
-          <div class="menu-grid">
-            {focaccia.data.items.map(item => (
-              <article class="menu-item">
-                <div>
-                  <h3 class="menu-item__name">
-                    {item.name}
-                    {item.dietary && (
-                      <span class="menu-item__dietary">({item.dietary})</span>
-                    )}
-                  </h3>
-                  <p class="menu-item__desc">{item.description}</p>
-                </div>
-                <div class="menu-item__price">{item.price}</div>
-              </article>
-            ))}
-          </div>
-        </div>
-
-        <!-- Dietary key -->
-        <div style="margin-top:4rem; padding-top:2rem; border-top:1px solid var(--beige-dark);">
-          <p style="font-size:0.8rem; color:#8A7060; font-family:'Cormorant SC',Georgia,serif; letter-spacing:0.1em;">
-            (v) vegetarian &nbsp;·&nbsp; (vg) vegan &nbsp;·&nbsp; (gf) gluten free — please ask about allergens
-          </p>
-        </div>
+    <section class="wrap block">
+      <div class="block__head">
+        <span class="label">Focaccia sandwiches</span>
+        <h2 style="color:var(--rosso);">
+          {focaccia.data.category}
+        </h2>
+        {focaccia.data.description && (
+          <p class="lede">{focaccia.data.description}</p>
+        )}
       </div>
+
+      <!-- Menu card image -->
+      <div style="max-width:360px; margin-bottom:0.5rem;">
+        <img
+          src={`${base}/images/menu-card.jpg`}
+          alt="La Cucina Povera menu card"
+          loading="lazy"
+          style="width:100%; height:auto; border:6px solid var(--white); box-shadow:0 8px 24px -12px rgba(28,27,26,0.4);"
+          onerror="this.parentElement.style.display='none'"
+        />
+      </div>
+
+      <!-- Deli price list -->
+      <div class="menu-sheet" style="max-width:640px;">
+        {focaccia.data.items.map(item => (
+          <article class="menu-item">
+            <div>
+              <h3 class="menu-item__name">
+                {item.name}
+                {item.dietary === 'v'  && <span class="menu-item__dietary">Veggie</span>}
+                {item.dietary === 'vg' && <span class="menu-item__dietary vegan">Vegan</span>}
+                {item.dietary === 'gf' && <span class="menu-item__dietary" style="background:var(--saffron); color:var(--nero);">GF</span>}
+              </h3>
+              <p class="menu-item__desc">{item.description}</p>
+            </div>
+            <div class="menu-item__price">{item.price}</div>
+          </article>
+        ))}
+      </div>
+
+      <p style="font-family:var(--font-typed); font-size:0.8rem; color:var(--nero-3); border-top:1px dashed var(--piega); padding-top:1rem; max-width:640px;">
+        (v) vegetarian &nbsp;·&nbsp; (vg) vegan &nbsp;·&nbsp; (gf) gluten free — please ask about allergens before ordering.
+      </p>
     </section>
   )}
 
-  <!-- Come find us CTA -->
-  <section style="padding-block:var(--space-xl); background:var(--terracotta); text-align:center;">
-    <div class="container">
-      <span class="section-label" style="color:rgba(255,255,255,0.6);">Come in</span>
-      <h2 style="color:var(--cream); margin-bottom:1rem;">
-        Come and <em style="font-style:italic;">try it.</em>
-      </h2>
-      <p style="color:rgba(255,255,255,0.75); margin-bottom:2rem;">
+  <!-- CTA -->
+  <section style="background:var(--rosso); color:var(--white); padding-block:2.5rem 3.5rem;">
+    <div class="wrap" style="display:flex; flex-direction:column; gap:1rem;">
+      <span class="label" style="color:rgba(255,255,255,0.6);">Come in</span>
+      <h2>Come and try it.</h2>
+      <p style="font-size:1.05rem; max-width:50ch; opacity:0.9;">
         We're on {s.address}. Focaccia's warm.
       </p>
-      <a href={`${base}/#find-us`} class="btn btn--ghost">Find us</a>
+      <div class="btn-row">
+        <a href={`${base}/#find-us`} class="btn btn--ghost">Find us</a>
+        <a href={`tel:${s.phone}`} class="btn btn--ghost">Call us</a>
+      </div>
     </div>
   </section>
 </Layout>
-
-<style>
-  /* Menu page two-col layout */
-  .menu-page-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-xl);
-    align-items: start;
-    max-width: var(--max-width);
-  }
-
-  .menu-page-sticky {
-    position: sticky;
-    top: calc(var(--nav-height) + 2rem);
-  }
-
-  /* Tablet: side panel unsticks, stacks below on small screens */
-  @media (max-width: 900px) {
-    .menu-page-grid {
-      grid-template-columns: 1fr;
-    }
-    .menu-page-sticky {
-      position: static;
-    }
-    /* Show menu card image smaller inline */
-    .menu-page-sticky > div:last-child {
-      max-width: 320px;
-    }
-  }
-</style>

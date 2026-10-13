@@ -37,7 +37,7 @@ git push -u origin main
 Once the site is live on GitHub Pages, your CMS is at:
 
 ```
-https://nathanasaide.github.io/LaCucinaPovera/admin
+https://impoverishedkitchen.co.uk/admin
 ```
 
 ### What you'll see
@@ -77,12 +77,13 @@ This is the thing you'll do most often.
 1. Log into the CMS
 2. Click **Site Settings** in the left sidebar
 3. Click **General Settings**
-4. Find the **"Is Open Today?"** toggle — flip it on or off
+4. Set **"Open / Closed override"** to **Auto** for the normal London-time schedule, **Force open**, or **Force closed**. Return manual overrides to **Auto** when the exception ends.
 5. Optionally update **"Hours note / this week's exception"** with something like:
    - `"Open this weekend (Fri–Sun 5–10pm) — see you there."`
    - `"Closed this weekend — back Wednesday 7pm."`
-6. Click **Save** in the top right
-7. **Done** — the site rebuilds automatically and is live in about 2 minutes
+6. Set **"Hours note last visible date"** to expire a dated note after that day in London time. This hides the note but does not reset a manual status override.
+7. Click **Save** in the top right
+8. **Done** — the site rebuilds and runs its checks before deploying.
 
 The open/closed dot in the nav updates, and the note appears under your
 hours table on the homepage.

@@ -1,0 +1,40 @@
+{
+  "googleMapsUrl": "",
+  "locationText": "Off Offerton Lane, Stockport. Plenty of space for dogs, kids, and anyone who just fancied a walk and ended up staying for a pizza.",
+  "soupText": "The soup changes with what's good — ask us what's on. Our fennel sausage & white bean soup is a regular — rich, slow-cooked, exactly the kind of thing you want after an hour in the cold.\nAlways served with fresh focaccia on the side.",
+  "focacciaText": "Baked fresh on site. Good olive oil, good salt, good bread. Take a piece with your soup, your pizza, or just on its own. It won't last long.\nAvailable to take away too — whole pieces while they last.",
+  "pizzas": [
+    {
+      "name": "Chorizo, Coriander & Hot Honey",
+      "description": "Spiced chorizo, fresh coriander, a drizzle of hot honey. Sweet heat, properly done."
+    },
+    {
+      "name": "Margherita",
+      "description": "San Marzano tomato, fior di latte, fresh basil. The original — no notes."
+    },
+    {
+      "name": "Pepperoni",
+      "description": "Classic cupped pepperoni, tomato, mozzarella. Crisp edges, good oil."
+    },
+    {
+      "name": "Potato, Crispy Onions & Chilli",
+      "description": "Thin-sliced potato, golden crispy onions, fresh chilli. No tomato, all comfort."
+    },
+    {
+      "name": "BBQ Chicken Leg & Red Onion",
+      "description": "Slow-cooked chicken leg, smoky BBQ base, sweet red onion. Proper crowd-pleaser."
+    },
+    {
+      "name": "Prosciutto, Rocket & Mozzarella",
+      "description": "Cured prosciutto draped over melted mozzarella, finished with peppery rocket."
+    },
+    {
+      "name": "Rosemary & Taleggio",
+      "description": "Fragrant rosemary, creamy Taleggio. Simple, rich, and deeply satisfying."
+    },
+    {
+      "name": "Roast Red Pepper, Goats Cheese & Rocket",
+      "description": "Sweet roasted peppers, tangy goats cheese, fresh rocket. Bright and bold."
+    }
+  ]
+}
