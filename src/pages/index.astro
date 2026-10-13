@@ -105,26 +105,31 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <div class="menu-sheet" style="max-width:600px;">
-      {allItems.map(item => (
-        <article class="menu-item">
-          <div>
-            <h3 class="menu-item__name">
-              {item.name}
-              {item.dietary === 'v' && <span class="menu-item__dietary">Veggie</span>}
-              {item.dietary === 'vg' && <span class="menu-item__dietary vegan">Vegan</span>}
-            </h3>
-            <p class="menu-item__desc">{item.description}</p>
-          </div>
-          <div class="menu-item__price">
-            <!-- Curved twine SVG matching the reference design -->
-            <svg width="36" height="28" viewBox="0 0 36 28" fill="none" aria-hidden="true">
-              <path d="M34 14 C28 14, 24 6, 16 8 C10 10, 8 14, 4 14" stroke="#8A6A42" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-              <circle cx="4" cy="14" r="3" stroke="#8A6A42" stroke-width="1.5" fill="#E9DDC6"/>
-            </svg>
-            <span class="price-tag">{item.price}</span>
-          </div>
-        </article>
-      ))}
+      {allItems.map((item, i) => {
+        const twine = i % 2 === 0
+          ? "M34 14 C28 10, 22 6, 14 9 C8 11, 6 16, 4 14"
+          : "M34 14 C28 18, 22 22, 14 19 C8 17, 6 12, 4 14";
+        const tagAngle = i % 2 === 0 ? "rotate(-2deg)" : "rotate(2deg)";
+        return (
+          <article class="menu-item">
+            <div>
+              <h3 class="menu-item__name">
+                {item.name}
+                {item.dietary === 'v' && <span class="menu-item__dietary">Veggie</span>}
+                {item.dietary === 'vg' && <span class="menu-item__dietary vegan">Vegan</span>}
+              </h3>
+              <p class="menu-item__desc">{item.description}</p>
+            </div>
+            <div class="menu-item__price">
+              <svg width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true">
+                <path d={twine} stroke="#8A6A42" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                <circle cx="4" cy="14" r="3" stroke="#8A6A42" stroke-width="1.5" fill="#E9DDC6"/>
+              </svg>
+              <span class="price-tag" style={`transform:${tagAngle};`}>{item.price}</span>
+            </div>
+          </article>
+        );
+      })}
     </div>
 
     <p style="font-family:var(--font-typed); font-size:0.8rem; color:var(--nero-3);">
