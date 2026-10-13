@@ -57,8 +57,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <!-- Desktop links -->
         <div class="site-nav__links">
           <a href={`${base}/`}>Home</a>
-          <a href={`${base}/menu`}>Menu</a>
-          <a href={`${base}/woodbank`}>Woodbank</a>
+          <a href={`${base}/sandwiches`}>Sandwiches</a>
+          <a href={`${base}/pizzas`}>Pizzas</a>
           <a href={`${base}/photos`}>Photos</a>
           <a href={`${base}/#find-us`}>Find us</a>
         </div>
@@ -108,8 +108,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <!-- Mobile drawer -->
       <div class="site-nav__drawer" id="mobile-menu" aria-hidden="true">
         <a href={`${base}/`}>Home</a>
-        <a href={`${base}/menu`}>Menu</a>
-        <a href={`${base}/woodbank`}>Woodbank</a>
+        <a href={`${base}/sandwiches`}>Sandwiches</a>
+        <a href={`${base}/pizzas`}>Pizzas</a>
         <a href={`${base}/photos`}>Photos</a>
         <a href={`${base}/#find-us`}>Find us</a>
       </div>
@@ -174,7 +174,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <p>&copy; {new Date().getFullYear()} La Cucina Povera · 22 Park Lane · Offerton, Stockport</p>
           <div class="site-footer__social">
             <a href={`${base}/`}>Home</a>
-            <a href={`${base}/menu`}>Menu</a>
+            <a href={`${base}/sandwiches`}>Sandwiches</a>
+            <a href={`${base}/pizzas`}>Pizzas</a>
             <a href={`${base}/photos`}>Photos</a>
             <a href={`${base}/#find-us`}>Find us</a>
           </div>
@@ -184,13 +185,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <!-- ── Bottom dock (mobile) ──────────────────────────── -->
     <nav class="dock" aria-label="Quick actions">
-      <a href={`${base}/menu`}>
-        <!-- Knife & fork icon -->
+      <a href={`${base}/sandwiches`}>
+        <!-- Sandwich / bread icon -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><line x1="7" y1="2" x2="7" y2="22"/>
-          <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h1v9"/>
+          <path d="M3 11h18M3 6c0-1.1 4-2 9-2s9 .9 9 2M3 11c0 5 2 7 9 7s9-2 9-7"/>
+          <path d="M7 11v4M12 11v4M17 11v4"/>
         </svg>
-        Menu
+        Sandwiches
       </a>
       <a href={`${base}/#find-us`}>
         <!-- Pin icon -->

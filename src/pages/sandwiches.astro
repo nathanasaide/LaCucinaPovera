@@ -8,12 +8,15 @@ const s = site!.data;
 const menuEntries = await getCollection('menu');
 const focaccia = menuEntries.find(e => e.id === 'focaccia');
 
+const woodbank = await getEntry('woodbank', 'site');
+const w = woodbank!.data;
+
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Layout
-  title="Menu"
-  description="Our focaccia sandwich menu — fresh-baked, stuffed properly. La Cucina Povera, Offerton, Stockport."
+  title="Sandwiches"
+  description="Focaccia sandwiches and soups — fresh-baked, stuffed properly. La Cucina Povera, Offerton, Stockport."
   openText={s.openStatusText}
   closedText={s.closedStatusText}
   scheduleOverride={s.scheduleOverride}
@@ -21,11 +24,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <!-- Page header -->
   <div class="page-hero">
     <div class="wrap">
-      <span class="label">Menu</span>
+      <span class="label">Sandwiches</span>
       <h1>On the counter<br /><span style="color:var(--rosso);">tonight.</span></h1>
       <p class="lede" style="margin-top:0.875rem;">
-        Fresh-baked focaccia, stuffed properly, wrapped in greaseproof.
+        Fresh-baked focaccia, stuffed properly, wrapped in greaseproof and passed out the back.
         Everything made with real ingredients. Nothing off a shelf.
+      </p>
+      <p class="lede" style="margin-top:0.5rem; font-family:var(--font-typed); font-size:0.88rem; color:var(--nero-3);">
+        We also supply to coffee shops — get in touch if you're interested in wholesale.
       </p>
     </div>
   </div>
@@ -35,9 +41,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <section class="wrap block">
       <div class="block__head">
         <span class="label">Focaccia sandwiches</span>
-        <h2 style="color:var(--rosso);">
-          {focaccia.data.category}
-        </h2>
+        <h2 style="color:var(--rosso);">{focaccia.data.category}</h2>
         {focaccia.data.description && (
           <p class="lede">{focaccia.data.description}</p>
         )}
@@ -83,6 +87,35 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </p>
     </section>
   )}
+
+  <!-- Soups -->
+  <section style="background:var(--kraft); padding-block:2.25rem 3.25rem;">
+    <div class="wrap block" style="padding-block:0; gap:1.25rem;">
+      <div class="block__head">
+        <span class="label">Also on</span>
+        <h2>Something<br /><span style="color:var(--rosso);">warm.</span></h2>
+      </div>
+      {w.soupText.split('\n').filter(Boolean).map((para: string) => (
+        <p class="lede">{para}</p>
+      ))}
+    </div>
+  </section>
+
+  <!-- Wholesale note -->
+  <section class="wrap block" style="gap:1rem;">
+    <div class="block__head">
+      <span class="label">Wholesale</span>
+      <h2>We supply<br /><span style="color:var(--rosso);">coffee shops.</span></h2>
+    </div>
+    <p class="lede">
+      Most of our focaccia goes out to local coffee shops before it ever hits the hatch.
+      If you're a café or deli and want fresh-baked focaccia sandwiches on your counter,
+      get in touch.
+    </p>
+    <div class="btn-row">
+      <a href={`mailto:${s.email}`} class="btn btn--ink">Get in touch</a>
+    </div>
+  </section>
 
   <!-- CTA -->
   <section style="background:var(--rosso); color:var(--white); padding-block:2.5rem 3.5rem;">

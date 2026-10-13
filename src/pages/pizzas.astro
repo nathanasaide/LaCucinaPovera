@@ -12,23 +12,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Layout
-  title="Woodbank Park"
-  description="Wood-fired pizzas, soup and fresh focaccia at Woodbank Park, Offerton. Dog walkers welcome."
+  title="Pizzas"
+  description="Wood-fired pizzas at Woodbank Park, Offerton. Made to order, come as you are. La Cucina Povera."
   openText={s.openStatusText}
   closedText={s.closedStatusText}
   scheduleOverride={s.scheduleOverride}
 >
-  <!-- Page header -->
+  <!-- Page header — dark, outdoor feel -->
   <div class="page-hero" style="background:var(--nero); color:var(--carta); border-bottom:2px solid var(--rosso);">
     <div class="wrap">
       <span class="label" style="color:rgba(255,255,255,0.5);">Woodbank Park</span>
       <h1>Come as you<br /><span style="color:var(--rosso);">are.</span></h1>
       <p class="lede" style="color:rgba(255,255,255,0.75); margin-top:0.875rem; max-width:36rem;">
-        Out for a dog walk, a run, or just after something genuinely good to eat —
-        we're here. Wood-fired pizzas, soup of the day, and fresh focaccia.
-        Come rain or shine.
+        Wood-fired pizzas at Woodbank Park, Offerton. Made to order, out of a proper outdoor kitchen.
+        Bring the dog. Come rain or shine.
       </p>
       <div class="btn-row" style="margin-top:1.25rem;">
+        {w.googleMapsUrl && (
+          <a href={w.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="btn btn--ghost">
+            Get directions
+          </a>
+        )}
         <a href={`${base}/#find-us`} class="btn btn--ghost">Opening hours</a>
       </div>
     </div>
@@ -42,8 +46,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
     <p class="lede">
       La Cucina Povera at Woodbank Park is our outdoor kitchen — wood-fired pizzas made to order,
-      proper soups on cold days, and fresh focaccia straight from the oven. Whether you've got
-      a lead in one hand or just a good appetite, you're welcome here.
+      out in the open. Whether you've got a lead in one hand or just a good appetite,
+      you're welcome here.
     </p>
     <p class="lede">Everything is made fresh. Nothing is reheated.</p>
   </section>
@@ -62,7 +66,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <div class="menu-sheet" style="max-width:640px;">
         {w.pizzas.map(pizza => (
-          <article class="menu-item">
+          <article class="menu-item" style="grid-template-columns:1fr;">
             <div>
               <h3 class="menu-item__name">{pizza.name}</h3>
               <p class="menu-item__desc">{pizza.description}</p>
@@ -70,30 +74,32 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </article>
         ))}
       </div>
+
+      <p style="font-family:var(--font-typed); font-size:0.8rem; color:var(--nero-3); border-top:1px dashed var(--piega); padding-top:1rem; max-width:640px;">
+        Folded Neapolitan-style or boxed to take away — your call.
+        Please ask about allergens before ordering.
+      </p>
     </div>
   </section>
 
-  <!-- Soups & Focaccia -->
-  <section class="wrap block">
-    <div class="extras-grid">
-      <div>
-        <span class="label">Soups</span>
-        <h2 style="margin:0.4rem 0 0.875rem; font-size:clamp(1.5rem,4vw,2.25rem);">Something warm.</h2>
-        {w.soupText.split('\n').filter(Boolean).map(para => (
-          <p class="lede" style="margin-bottom:0.75rem;">{para}</p>
-        ))}
-      </div>
-      <div>
-        <span class="label">Focaccia</span>
-        <h2 style="margin:0.4rem 0 0.875rem; font-size:clamp(1.5rem,4vw,2.25rem);">Fresh from the oven.</h2>
-        {w.focacciaText.split('\n').filter(Boolean).map(para => (
-          <p class="lede" style="margin-bottom:0.75rem;">{para}</p>
-        ))}
-      </div>
+  <!-- Focaccia mention -->
+  <section class="wrap block" style="gap:1rem;">
+    <div class="block__head">
+      <span class="label">Also at the park</span>
+      <h2>Focaccia &amp;<br /><span style="color:var(--rosso);">soups.</span></h2>
+    </div>
+    {w.focacciaText.split('\n').filter(Boolean).map((para: string) => (
+      <p class="lede">{para}</p>
+    ))}
+    {w.soupText.split('\n').filter(Boolean).map((para: string) => (
+      <p class="lede">{para}</p>
+    ))}
+    <div class="btn-row" style="margin-top:0.5rem;">
+      <a href={`${base}/sandwiches`} class="btn btn--line">See the sandwich menu</a>
     </div>
   </section>
 
-  <!-- Find us CTA -->
+  <!-- Find us at the park -->
   <section class="find-us">
     <div class="wrap block" style="gap:1.25rem;">
       <span class="label" style="color:rgba(255,255,255,0.5);">Where to find us</span>
@@ -115,15 +121,3 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
   </section>
 </Layout>
-
-<style>
-  .extras-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: start;
-  }
-  @media (max-width: 640px) {
-    .extras-grid { grid-template-columns: 1fr; gap: 2rem; }
-  }
-</style>
