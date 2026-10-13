@@ -13,7 +13,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <Layout
   title="Pizzas"
-  description="Wood-fired pizzas at Woodbank Park, Offerton. Made to order, come as you are. La Cucina Povera."
+  description="Wood-fired pizzas in Offerton, on the way to Woodbank Park. Made to order. La Cucina Povera."
   openText={s.openStatusText}
   closedText={s.closedStatusText}
   scheduleOverride={s.scheduleOverride}
@@ -21,11 +21,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <!-- Page header — dark, outdoor feel -->
   <div class="page-hero" style="background:var(--nero); color:var(--carta); border-bottom:2px solid var(--rosso);">
     <div class="wrap">
-      <span class="label" style="color:rgba(255,255,255,0.5);">Woodbank Park</span>
+      <span class="label" style="color:rgba(255,255,255,0.5);">22 Park Lane, Offerton</span>
       <h1>Come as you<br /><span style="color:var(--rosso);">are.</span></h1>
       <p class="lede" style="color:rgba(255,255,255,0.75); margin-top:0.875rem; max-width:36rem;">
-        Wood-fired pizzas at Woodbank Park, Offerton. Made to order, out of a proper outdoor kitchen.
-        Bring the dog. Come rain or shine.
+        Wood-fired pizzas made to order from an outdoor kitchen on Park Lane — on the way to Woodbank.
+        Bring the dog. Come as you are.
       </p>
       <div class="btn-row" style="margin-top:1.25rem;">
         {w.googleMapsUrl && (
@@ -45,8 +45,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <h2>Pizza in<br /><span style="color:var(--rosso);">the park.</span></h2>
     </div>
     <p class="lede">
-      La Cucina Povera at Woodbank Park is our outdoor kitchen — wood-fired pizzas made to order,
-      out in the open. Whether you've got a lead in one hand or just a good appetite,
+      Wood-fired pizzas made to order from the outdoor kitchen at 22 Park Lane — round the back,
+      on the way to Woodbank. Whether you've got a lead in one hand or just a good appetite,
       you're welcome here.
     </p>
     <p class="lede">Everything is made fresh.</p>
@@ -103,7 +103,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <section class="find-us">
     <div class="wrap block" style="gap:1.25rem;">
       <span class="label" style="color:rgba(255,255,255,0.5);">Where to find us</span>
-      <h2>Woodbank<br /><span style="color:var(--rosso);">Park.</span></h2>
+      <h2>Round<br /><span style="color:var(--rosso);">the back.</span></h2>
       <p style="font-family:var(--font-typed); font-size:0.94rem; color:rgba(255,255,255,0.7); max-width:40ch; line-height:1.7;">
         {w.locationText}
       </p>
