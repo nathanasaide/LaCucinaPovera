@@ -55,7 +55,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
 
       <!-- Deli price list -->
-      <div class="menu-sheet" style="max-width:640px; padding-right:2rem;">
+      <div class="menu-sheet" style="max-width:640px;">
         {focaccia.data.items.map(item => (
           <article class="menu-item">
             <div>
@@ -67,7 +67,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               </h3>
               <p class="menu-item__desc">{item.description}</p>
             </div>
-            <div class="menu-item__price">{item.price}</div>
+            <div class="menu-item__price">
+              <svg width="36" height="28" viewBox="0 0 36 28" fill="none" aria-hidden="true">
+                <path d="M34 14 C28 14, 24 6, 16 8 C10 10, 8 14, 4 14" stroke="#8A6A42" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                <circle cx="4" cy="14" r="3" stroke="#8A6A42" stroke-width="1.5" fill="#E9DDC6"/>
+              </svg>
+              <span class="price-tag">{item.price}</span>
+            </div>
           </article>
         ))}
       </div>
