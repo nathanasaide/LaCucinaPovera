@@ -335,7 +335,7 @@ p { margin: 0; line-height: 1.65; }
   background: var(--nero);
   color: var(--carta);
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
   padding-bottom: env(safe-area-inset-bottom, 0px);
   border-top: 3px solid var(--rosso);
 }
