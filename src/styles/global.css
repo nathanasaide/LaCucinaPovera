@@ -533,15 +533,17 @@ p { margin: 0; line-height: 1.65; }
   background-image:
     radial-gradient(ellipse 120px 70px at 50% 0, rgba(200,180,150,0.08) 0%, transparent 100%);
   box-shadow: 0 1px 0 var(--piega), 0 16px 26px -22px rgba(28,27,26,0.35);
+  overflow: visible; /* let price tags hang off the right edge */
 }
 
 .menu-item {
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: start;
-  gap: 1rem;
+  align-items: center;
+  gap: 1.5rem;
   padding: 1rem 1.25rem;
   border-bottom: 1px dashed var(--piega);
+  overflow: visible;
 }
 .menu-item:last-child { border-bottom: none; }
 
@@ -572,12 +574,52 @@ p { margin: 0; line-height: 1.65; }
   line-height: 1.5;
 }
 
+/* Kraft price tag — hangs off the right on twine */
 .menu-item__price {
+  position: relative;
+  align-self: flex-start;
   font-family: var(--font-stamp);
-  font-size: 1.25rem;
+  font-size: 1rem;
   white-space: nowrap;
-  padding-top: 0.1rem;
-  color: var(--rosso);
+  color: var(--nero);
+  background: var(--kraft);
+  border: 1px solid var(--spago, #8A6A42);
+  padding: 0.35rem 0.6rem 0.35rem 0.9rem;
+  margin-right: -1.25rem; /* hang off the right edge of the sheet */
+  box-shadow: 0 2px 6px -2px rgba(28,27,26,0.25);
+  line-height: 1.2;
+}
+
+/* Punched hole + twine */
+.menu-item__price::before {
+  content: '';
+  position: absolute;
+  left: 0.3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--piega);
+  border: 1px solid var(--spago, #8A6A42);
+  box-shadow: inset 0 0 0 1px rgba(28,27,26,0.15);
+}
+
+/* Twine string hanging left */
+.menu-item__price::after {
+  content: '';
+  position: absolute;
+  left: -1.5rem;
+  top: 50%;
+  width: 1.5rem;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--spago, #8A6A42) 0px,
+    var(--spago, #8A6A42) 2px,
+    transparent 2px,
+    transparent 5px
+  );
 }
 
 /* ----------------------------------------------------------
